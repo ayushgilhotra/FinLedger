@@ -1,71 +1,61 @@
-# 💎 FinLedger: Modern FinTech Analytics Dashboard
+FinLedger
+A financial analytics dashboard with role-based access, interactive charts, and a notification system.
 
-FinLedger is a high-performance, professional financial analytics dashboard designed to provide real-time insights into personal or corporate wealth. Built with a modern tech stack and focusing on baseline-perfect typography, it offers a glassmorphism-inspired UI with robust role-based access control.
+React + Vite
+Node.js + Express
+MongoDB
+JWT Auth
+FinLedger is a full-stack dashboard I built to track personal or corporate finances — income vs. expenses over time, category breakdowns, recent transaction feeds, and a leaderboard. The UI leans on glassmorphism-style surfaces and uses tabular-nums throughout so financial figures don't jump around as they update.
 
-![FinLedger Dashboard Overview](https://via.placeholder.com/1200x600/0a0a0a/ffffff?text=FinLedger+Modern+Dashboard)
+Features
+Dashboard
+Summary cards with baseline-aligned numbers
+Monthly income vs. expense bar/line chart
+Spending breakdown by category (doughnut chart)
+Notification dropdown with the 10 most recent transactions
+Role-based access
+Three roles with different views:
 
-## 🚀 Key Features
+Role	What they can see
+admin	System audit logs, user management, high-equity investor tracking
+analyst	Global trends, leaderboard, investor portfolios
+user	Personal journal, payment history, leaderboard rank
+Other
+System status page for infrastructure health — useful for debugging deploys
+Error boundaries to prevent one broken widget from taking down the whole dashboard
+Stack
+Frontend: React (Vite), Tailwind CSS, Lucide Icons, Framer Motion
+Backend: Node.js, Express.js
+Database: MongoDB via Mongoose
+Auth: JWT
+Getting started
+You'll need Node.js and a MongoDB instance (local or Atlas) before starting.
 
-### 📊 Professional Analytics
-- **Baseline-Perfect Summary Cards**: Numeric values are strictly aligned to a common baseline grid using `tabular-nums` for professional financial presentation.
-- **Dynamic Trend Visualization**: Interactive charts showing monthly income vs. expenses.
-- **Category Allocation**: Granular breakdown of spending habits using interactive doughnut charts.
-
-### 🔔 Advanced Notification System
-- **Stateful Activity Hub**: Professional notification dropdown with backdrop-blur effects.
-- **Real-Time Feeds**: Stay updated with the 10 most recent transactions as they happen.
-
-### 🏆 Role-Based Access Control (RBAC)
-- **Admin**: Full system audit, user management, and high-equity investor tracking.
-- **Analyst**: Access to global trends, leaderboard insights, and investor portfolios.
-- **User**: Personal financial journal, payment history, and global leaderboard rank.
-
-### 🛡️ Resilience & Diagnostics
-- **System Status Page**: Public diagnostic mode for real-time infrastructure health tracking.
-- **Global Error Boundaries**: Robust error handling to ensure application stability under stress.
-
-## 🛠️ Tech Stack
-- **Frontend**: React (Vite), Tailwind CSS, Lucide Icons, Framer Motion.
-- **Backend**: Node.js, Express.js, Mongoose.
-- **Database**: MongoDB (Production ready).
-- **Authentication**: JWT (JSON Web Tokens).
-
-## ⚙️ Installation & Setup
-
-### 1. Clone the repository
-```bash
 git clone https://github.com/ayushgilhotra/FinLedger.git
 cd FinLedger
-```
+1. Environment variables
+Copy the example file and fill in your values:
 
-### 2. Configure Environment Variables
-Create a `.env` file in the `server/` directory based on `.env.example`.
+cp server/.env.example server/.env
+You'll need MONGO_URI and JWT_SECRET at minimum.
 
-### 3. Backend Setup
-```bash
+2. Backend
 cd server
 npm install
 node src/server.js
-```
-
-### 4. Frontend Setup
-```bash
+3. Frontend
 cd ../client
 npm install
 npm run dev
-```
+Deployment
+Backend (Render / Railway)
+Root directory: server/
+Start command: node src/server.js
+Env vars: MONGO_URI, JWT_SECRET
+Frontend (Vercel / Netlify)
+Root directory: client/
+Build command: npm run build
+Publish directory: dist/
+Env var: VITE_API_URL pointing to your deployed backend URL
 
-## 🌐 Deployment Checklist
-
-### Backend (Render/Railway)
-1. Set the root directory to `server/`.
-2. Configure `MONGO_URI` and `JWT_SECRET` in environment variables.
-3. Use `node src/server.js` as the start command.
-
-### Frontend (Vercel/Netlify)
-1. Set the root directory to `client/`.
-2. Configure `VITE_API_URL` pointing to your deployed backend.
-3. Use `npm run build` as the build command and `dist/` as the publish directory.
-
----
-Managed by **AuthenTick Architecture** 💎
+ Detailed Documentation :- https://drive.google.com/file/d/1ebMQCrZh9Kb3kg2tp5Lt6hUDxWVtVZRF/view?usp=drive_link
