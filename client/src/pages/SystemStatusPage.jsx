@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import toast from 'react-hot-toast';
 import { Shield, Activity, Database, Server, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Card from '../components/ui/Card';
@@ -16,11 +16,11 @@ const SystemStatusPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/dashboard/health`);
-      setData(response.data.data);
+      const response = await api.get('/dashboard/health');
+      setData(response.data);
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.error || 'Unable to connect to the backend system.');
+      setError(err.error || 'Unable to connect to the backend system.');
     } finally {
       setLoading(false);
     }
@@ -30,12 +30,12 @@ const SystemStatusPage = () => {
     setRecalibrating(true);
     const toastId = toast.loading('Recalibrating core infrastructure...');
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/dashboard/recalibrate`);
+      await api.post('/dashboard/recalibrate');
       toast.success('System successfully recalibrated with professional dataset', { id: toastId });
       fetchStatus();
     } catch (err) {
       console.error(err);
-      toast.error('Recalibration failed: ' + (err.response?.data?.detail || 'Unknown error'), { id: toastId });
+      toast.error('Recalibration failed: ' + (err.error || 'Unknown error'), { id: toastId });
     } finally {
       setRecalibrating(false);
     }
