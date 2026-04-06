@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { usersApi } from '../api/users.api';
-import Table from '../components/ui/Table';
-import Card from '../components/ui/Card';
+import DataTable from '../components/ui/DataTable';
+import StatCard from '../components/ui/StatCard';
 import Badge from '../components/ui/Badge';
 import Pagination from '../components/ui/Pagination';
 import { formatDate } from '../utils/formatters';
-import { UserCog, Shield, Activity, Calendar, Eye } from 'lucide-react';
+import { UserCog, Shield, Activity, Calendar, Eye, UserCheck, Users, Fingerprint } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -13,7 +13,7 @@ const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [pagination, setPagination] = useState({});
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ page: 1, limit: 10 });
+  const [filters, setFilters] = useState({ page: 1, limit: 12 });
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
@@ -35,10 +35,11 @@ const UsersPage = () => {
   const handleRoleChange = async (id, role) => {
     try {
       await usersApi.updateUserRole(id, role);
-      toast.success('User role updated');
+      toast.success('Security tier updated');
       fetchUsers();
     } catch (err) {
       console.error(err);
+      toast.error('Privilege escalation failed');
     }
   };
 
@@ -46,99 +47,168 @@ const UsersPage = () => {
     const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
     try {
       await usersApi.updateUserStatus(id, newStatus);
-      toast.success(`User ${newStatus === 'active' ? 'activated' : 'deactivated'}`);
+      toast.success(`Node ${newStatus === 'active' ? 'activated' : 'quarantined'}`);
       fetchUsers();
     } catch (err) {
       console.error(err);
+      toast.error('Status transition failed');
     }
   };
 
   const columns = [
     { 
-      header: 'Identity', 
+      header: 'Identity / Fingerprint', 
       render: (row) => (
-        <div className="flex flex-col">
-          <span className="font-bold">{row.name}</span>
-          <span className="text-xs text-text-muted font-mono">{row.email}</span>
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-btn bg-accent-blue/10 flex items-center justify-center text-accent-blue border border-accent-blue/20">
+            <Fingerprint size={16} />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-[0.875rem] font-bold text-text-primary">{row.name}</span>
+            <span className="text-[0.7rem] text-text-dim font-mono uppercase tracking-tight">{row.email}</span>
+          </div>
         </div>
       )
     },
     { 
-      header: 'Access Level', 
+      header: 'Security Tier', 
       render: (row) => (
-        <select 
-          value={row.role}
-          onChange={(e) => handleRoleChange(row.id, e.target.value)}
-          className="bg-bg-surface border border-bg-border text-xs font-bold rounded-lg px-2 py-1 focus:ring-1 focus:ring-accent outline-none"
-        >
-          <option value="admin">Admin</option>
-          <option value="analyst">Analyst</option>
-          <option value="user">User</option>
-        </select>
+        <div className="relative group min-w-[140px]">
+          <select 
+            value={row.role}
+            onChange={(e) => handleRoleChange(row.id, e.target.value)}
+            className="w-full bg-bg-base border border-bg-border text-[0.7rem] font-bold uppercase tracking-widest rounded-btn px-3 py-1.5 focus:border-accent-teal/40 outline-none appearance-none cursor-pointer hover:bg-bg-elevated/30"
+          >
+            <option value="admin">ROOT_ADMIN</option>
+            <option value="analyst">INTEL_ANALYST</option>
+            <option value="user">NODE_ACCESS</option>
+          </select>
+          <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-text-dim group-hover:text-accent-teal transition-colors">
+            <ChevronRight size={12} className="rotate-90" />
+          </div>
+        </div>
       )
     },
     { 
-      header: 'System Status', 
+      header: 'Node Status', 
       render: (row) => (
         <div className="flex items-center gap-4">
-          <Badge variant={row.status} dot>{row.status}</Badge>
+          <Badge variant={row.status === 'active' ? 'teal' : 'red'}>
+            {row.status === 'active' ? 'NOMINAL' : 'QUARANTINED'}
+          </Badge>
           <button 
             onClick={() => handleStatusToggle(row.id, row.status)}
-            className={`text-[10px] font-bold uppercase tracking-widest hover:underline ${row.status === 'active' ? 'text-expense' : 'text-income'}`}
+            className={`text-[0.65rem] font-bold uppercase tracking-[0.15em] border-b border-transparent transition-all hover:border-current ${row.status === 'active' ? 'text-accent-red hover:text-accent-red' : 'text-accent-teal hover:text-accent-teal'}`}
           >
-            {row.status === 'active' ? 'Disable' : 'Enable'}
+            {row.status === 'active' ? 'Deactivate' : 'Activate'}
           </button>
         </div>
       )
     },
     { 
-      header: 'Member Since', 
-      render: (row) => <span className="text-xs font-mono text-text-muted">{formatDate(row.created_at)}</span>
+      header: 'Registration Timestamp', 
+      render: (row) => (
+        <div className="flex items-center gap-2">
+          <Calendar size={14} className="text-text-dim" />
+          <span className="text-[11px] font-bold text-text-dim uppercase tracking-wider">{formatDate(row.created_at)}</span>
+        </div>
+      )
     },
     {
-      header: 'Audit',
+      header: 'Audit Portfolio',
+      className: 'text-right',
       render: (row) => (
-        <Link to={`/profile/${row.id}`}>
-          <button className="p-2 hover:bg-accent/10 rounded-lg text-accent transition-colors" title="View Portfolio">
+        <div className="flex justify-end">
+          <Link to={`/profile/${row.id}`} className="p-2 rounded-btn bg-bg-base border border-bg-border text-text-dim hover:text-accent-teal hover:border-accent-teal/40 transition-all shadow-sm">
             <Eye size={16} />
-          </button>
-        </Link>
+          </Link>
+        </div>
       )
     }
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="flex flex-col items-center justify-center text-center py-8 border-accent shadow-glow">
-          <Shield className="text-accent mb-2" size={32} />
-          <h4 className="text-2xl font-display font-bold">RBAC</h4>
-          <p className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Role Management</p>
-        </Card>
-        <Card className="flex flex-col items-center justify-center text-center py-8">
-          <Activity className="text-info mb-2" size={32} />
-          <h4 className="text-2xl font-display font-bold">{pagination.total || 0}</h4>
-          <p className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">Total Users</p>
-        </Card>
-        <Card className="flex flex-col items-center justify-center text-center py-8">
-          <UserCog className="text-warning mb-2" size={32} />
-          <h4 className="text-2xl font-display font-bold">Admin</h4>
-          <p className="text-xs font-bold text-text-secondary uppercase tracking-widest mt-1">System Console</p>
-        </Card>
+    <div className="space-y-10 pb-20 animate-in">
+      {/* Telemetry Header */}
+      <div className="flex items-end justify-between">
+        <div>
+          <span className="text-[0.7rem] font-bold uppercase tracking-[0.3em] text-accent-teal mb-1 block">Network Governance</span>
+          <h1 className="text-3xl font-extrabold text-text-primary tracking-tight">Active Node Directory</h1>
+        </div>
       </div>
 
-      <Card noPadding>
-        <Table columns={columns} data={users} loading={loading} />
-        <div className="px-6 border-t border-bg-border">
-          <Pagination 
-            currentPage={pagination.page} 
-            totalPages={pagination.totalPages} 
-            onPageChange={(p) => setFilters(prev => ({ ...prev, page: p }))}
-          />
+      {/* Governance Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCard 
+          label="Total Network Identities" 
+          value={pagination.total || 0} 
+          icon={Users} 
+          variant="blue" 
+          isHero 
+          isCurrency={false}
+        />
+        <StatCard 
+          label="Sovereign Access Level" 
+          value={842} 
+          delta="Stable topology" 
+          icon={Shield} 
+          variant="teal" 
+          isCurrency={false}
+        />
+        <StatCard 
+          label="Audit Requests" 
+          value={12} 
+          delta="Requires review" 
+          isNegative 
+          icon={Activity} 
+          variant="amber" 
+          isCurrency={false}
+        />
+      </div>
+
+      {/* Primary Registry Terminal */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-3 px-2">
+          <UserCheck size={18} className="text-accent-teal" />
+          <span className="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-text-primary">Verified Network Entities</span>
         </div>
-      </Card>
+        
+        <div className="rounded-lg border border-bg-border bg-bg-surface overflow-hidden shadow-card">
+          <DataTable 
+            columns={columns} 
+            data={users} 
+            loading={loading} 
+          />
+          <div className="px-8 py-4 border-t border-bg-border bg-bg-base/30 flex justify-between items-center">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-text-dim opacity-70">
+              Authority Node: GALILEO-AUTH-X
+            </span>
+            <Pagination 
+              currentPage={pagination.page} 
+              totalPages={pagination.totalPages} 
+              onPageChange={(p) => setFilters(prev => ({ ...prev, page: p }))}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
+
+const ChevronRight = ({ size, className }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
 
 export default UsersPage;

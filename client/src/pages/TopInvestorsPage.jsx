@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { dashboardApi } from '../api/dashboard.api';
-import Card from '../components/ui/Card';
-import Table from '../components/ui/Table';
+import DataTable from '../components/ui/DataTable';
+import StatCard from '../components/ui/StatCard';
 import Badge from '../components/ui/Badge';
-import { User, TrendingUp, DollarSign, Activity, ArrowRight } from 'lucide-react';
+import { User, TrendingUp, DollarSign, Activity, ArrowRight, ShieldCheck, Zap, Globe, Wallet } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 import { Link } from 'react-router-dom';
 
@@ -27,15 +27,15 @@ const TopInvestorsPage = () => {
 
   const columns = [
     {
-      header: 'Investor Profile',
+      header: 'Investor Identity',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-3xl bg-accent/20 flex items-center justify-center text-accent font-bold border border-accent/10">
-            {row.avatar || row.name.charAt(0)}
+          <div className="h-10 w-10 rounded-btn bg-bg-base border border-bg-border flex items-center justify-center text-text-primary font-bold">
+            <User size={20} className="text-text-dim" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white uppercase italic tracking-tight">{row.name}</p>
-            <p className="text-[10px] text-text-muted font-mono">{row.email}</p>
+            <p className="text-[0.875rem] font-bold text-text-primary tracking-tight">{row.name}</p>
+            <p className="text-[10px] text-text-dim font-mono uppercase tracking-tight">{row.email}</p>
           </div>
         </div>
       )
@@ -44,23 +44,24 @@ const TopInvestorsPage = () => {
       header: 'Equity Position',
       render: (row) => (
         <div className="flex flex-col">
-            <span className="text-sm font-bold text-income">{formatCurrency(row.totalInvested)}</span>
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-widest">{row.count} Asset Movements</span>
+            <span className="text-[0.875rem] font-bold text-accent-teal tracking-tight">{formatCurrency(row.totalInvested)}</span>
+            <span className="text-[10px] text-text-dim font-bold uppercase tracking-widest">{row.count} Asset Movements</span>
         </div>
       )
     },
     {
         header: 'Risk Profile',
         render: (row) => (
-            <Badge variant="active" dot className="bg-income/10 text-income hover:bg-income/20">High Growth</Badge>
+            <Badge variant="teal" outline className="border-accent-teal/30 text-accent-teal font-extrabold">AGGRESSIVE_GROWTH</Badge>
         )
     },
     {
-      header: 'Action',
+      header: 'Governance',
+      className: 'text-right',
       render: (row) => (
-        <Link to={`/profile/${row.userId}`}>
-          <button className="flex items-center gap-2 p-2 hover:bg-accent/10 rounded-lg text-accent text-xs font-bold transition-colors">
-            Open Ledger <ArrowRight size={14} />
+        <Link to={`/profile/${row.userId}`} className="flex justify-end">
+          <button className="flex items-center gap-2 px-4 py-1.5 rounded-btn bg-bg-base border border-bg-border text-text-dim hover:text-accent-teal hover:border-accent-teal/40 text-[0.65rem] font-bold uppercase tracking-widest transition-all group shadow-sm">
+            Audit Ledger <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </Link>
       )
@@ -68,50 +69,77 @@ const TopInvestorsPage = () => {
   ];
 
   return (
-    <div className="space-y-8 pb-10">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="space-y-10 pb-20 animate-in">
+      {/* Telemetry Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-display font-bold text-white tracking-tight italic uppercase">
-            Top<span className="text-accent underline underline-offset-8 decoration-accent/30 tracking-normal not-italic">Investors</span>
-          </h1>
-          <p className="text-text-secondary mt-2">Analysis of the most active high-equity accounts in the system.</p>
+           <span className="text-[0.7rem] font-bold uppercase tracking-[0.3em] text-accent-teal mb-1 block">Equity Intelligence</span>
+           <h1 className="text-3xl font-extrabold text-text-primary tracking-tight">Active Capital Velocity</h1>
+           <p className="text-sm text-text-dim font-medium mt-2 max-w-xl">
+             High-fidelity analysis of the most active high-equity accounts and capital movement protocols.
+           </p>
         </div>
-        <Card className="py-4 px-6 border-income/20 bg-income/5 flex items-center gap-4">
-          <TrendingUp className="text-income" size={32} />
-          <div>
-            <p className="text-[10px] font-bold uppercase text-text-muted tracking-widest leading-none">Global Portfolio Avg</p>
-            <p className="text-xl font-display font-bold text-white">
-                {data.length > 0 ? formatCurrency(data.reduce((acc, curr) => acc + curr.totalInvested, 0) / data.length) : '---'}
-            </p>
-          </div>
-        </Card>
+        <div className="bg-bg-surface border border-bg-border p-5 rounded-lg flex items-center gap-4 shadow-card">
+           <div className="p-3 rounded-btn bg-accent-teal/10 text-accent-teal border border-accent-teal/20">
+              <TrendingUp size={24} />
+           </div>
+           <div>
+              <p className="text-[0.65rem] font-bold uppercase text-text-dim tracking-widest leading-none mb-1">Global Portfolio Avg</p>
+              <h3 className="text-lg font-bold text-text-primary tracking-tighter">
+                {data.length > 0 ? formatCurrency(data.reduce((acc, curr) => acc + curr.totalInvested, 0) / data.length) : 'N/A'}
+              </h3>
+           </div>
+        </div>
       </div>
 
+      {/* Hero Metrics Row */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-         <Card className="flex flex-col items-center justify-center text-center py-6 border-bg-border">
-            <DollarSign className="text-accent mb-2" size={24} />
-            <p className="text-[10px] font-bold uppercase text-text-muted tracking-widest">Active Investors</p>
-            <h3 className="text-xl font-bold text-white">{data.length} Nodes</h3>
-         </Card>
-         <Card className="flex flex-col items-center justify-center text-center py-6 col-span-3 border-accent/20">
-             <div className="flex items-center gap-6">
-                <Activity size={32} className="text-accent animate-pulse" />
-                <div className="text-left">
-                   <p className="text-[10px] font-bold uppercase text-text-muted tracking-widest leading-none mb-1">System Intelligence Status</p>
-                   <h3 className="text-lg font-bold text-text-primary uppercase tracking-tighter">Real-time portfolio delta tracking active for Analysts</h3>
-                </div>
-             </div>
-         </Card>
+         <StatCard 
+            label="Monitored Nodes" 
+            value={data.length} 
+            icon={Globe} 
+            variant="blue" 
+            delta="Active now"
+            isCurrency={false}
+         />
+         <div className="md:col-span-3 bg-bg-surface border border-bg-border rounded-lg p-6 flex items-center justify-between relative overflow-hidden group shadow-card">
+              <div className="flex items-center gap-6 relative z-10">
+                 <div className="p-4 rounded-btn bg-accent-blue/10 text-accent-blue border border-accent-blue/20">
+                    <ShieldCheck size={24} />
+                 </div>
+                 <div className="space-y-1">
+                    <p className="text-[0.65rem] font-bold uppercase text-text-dim tracking-widest mb-1">Intelligence Status</p>
+                    <h3 className="text-lg font-bold text-text-primary tracking-tight">Delta-Tracking active for Institutional Analysts</h3>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-accent-teal flex items-center gap-2">
+                       <Zap size={10} className="animate-pulse" /> Sychronized with mainnet node
+                    </p>
+                 </div>
+              </div>
+              <div className="hidden md:block opacity-5 group-hover:opacity-10 transition-opacity absolute right-0">
+                 <Wallet size={120} strokeWidth={1} />
+              </div>
+         </div>
       </div>
 
-      <Card noPadding title="High Equity Holders" subtitle="Top 10 users by 'Investment' category volume">
-        <Table 
-          columns={columns} 
-          data={data} 
-          loading={loading} 
-          emptyMessage="No investors identified yet."
-        />
-      </Card>
+      {/* Primary Ranking Terminal */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-3 px-2">
+          <Activity size={18} className="text-accent-teal" />
+          <span className="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-text-primary">High Equity Holders Registry</span>
+        </div>
+        
+        <div className="rounded-lg border border-bg-border bg-bg-surface overflow-hidden shadow-card">
+          <DataTable 
+            columns={columns} 
+            data={data} 
+            loading={loading} 
+          />
+          <div className="px-8 py-4 border-t border-bg-border bg-bg-base/30 flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-text-dim opacity-70">
+            <span>Terminal: GAL-INVEST-0x</span>
+            <span>Batch ID: {Math.random().toString(36).substring(7).toUpperCase()}</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

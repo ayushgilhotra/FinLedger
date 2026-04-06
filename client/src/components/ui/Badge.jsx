@@ -4,35 +4,32 @@ import { twMerge } from 'tailwind-merge';
 
 const cn = (...inputs) => twMerge(clsx(...inputs));
 
-const Badge = ({ 
-  children, 
-  variant = 'default', 
-  dot = false, 
-  className 
-}) => {
+/**
+ * Badge component for roles, statuses, and transactional types.
+ * 
+ * @param {string} variant - 'teal', 'blue', 'purple', 'amber', 'red'.
+ * @param {boolean} outline - Whether to use an outline style.
+ */
+const Badge = ({ children, variant = 'teal', outline = false, className }) => {
   const variants = {
-    default: 'bg-bg-elevated text-text-secondary border-bg-border',
-    admin: 'bg-info/10 text-info border-info/20',
-    analyst: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-    user: 'bg-text-muted/10 text-text-secondary border-text-muted/20',
-    active: 'bg-income/10 text-income border-income/20',
-    inactive: 'bg-text-muted/10 text-text-secondary border-text-muted/20',
-    income: 'bg-income/10 text-income border-income/20',
-    expense: 'bg-expense/10 text-expense border-expense/20',
+    teal: "bg-accent-teal/10 text-accent-teal border-accent-teal/20",
+    blue: "bg-accent-blue/10 text-accent-blue border-accent-blue/20",
+    purple: "bg-accent-purple/10 text-accent-purple border-accent-purple/20",
+    amber: "bg-accent-amber/10 text-accent-amber border-accent-amber/20",
+    red: "bg-accent-red/10 text-accent-red border-accent-red/20",
   };
+
+  const outlineStyle = outline 
+    ? "bg-transparent border" 
+    : "border border-transparent";
 
   return (
     <span className={cn(
-      'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors',
+      "inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.65rem] font-bold uppercase tracking-widest",
       variants[variant],
+      outlineStyle,
       className
     )}>
-      {dot && (
-        <span className={cn(
-          "mr-1.5 h-1.5 w-1.5 rounded-full",
-          variant === 'active' || variant === 'income' ? "bg-income" : "bg-text-muted"
-        )} />
-      )}
       {children}
     </span>
   );

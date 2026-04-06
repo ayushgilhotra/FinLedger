@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDashboard } from '../hooks/useDashboard';
-import SummaryCards from '../components/charts/SummaryCards';
 import TrendChart from '../components/charts/TrendChart';
 import CategoryChart from '../components/charts/CategoryChart';
 import { formatDate, formatCurrency } from '../utils/formatters';
-import Table from '../components/ui/Table';
-import Card from '../components/ui/Card';
+import DataTable from '../components/ui/DataTable';
+import StatCard from '../components/ui/StatCard';
 import Badge from '../components/ui/Badge';
-import { RefreshCw, ArrowRight } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { RefreshCw, ArrowRight, Wallet, Activity, TrendingUp, Shield, BarChart3, PieChart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const DashboardPage = () => {
@@ -29,28 +28,32 @@ const DashboardPage = () => {
     { 
       header: 'Settlement Date', 
       accessor: 'date',
-      render: (row) => <span className="font-mono text-xs font-black tracking-widest text-text-secondary uppercase">{formatDate(row.date)}</span>
+      render: (row) => <span className="font-mono text-[11px] font-bold tracking-wider text-text-dim/80">{formatDate(row.date)}</span>
     },
     { 
-      header: 'Category Type', 
+      header: 'Entity / Category', 
       accessor: 'category',
-      render: (row) => <span className="font-black text-xs uppercase tracking-[0.1em] text-white">{row.category}</span>
-    },
-    { 
-      header: 'System Status', 
-      accessor: 'type',
       render: (row) => (
-        <Badge variant={row.type}>{row.type}</Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="blue" outline>{row.category}</Badge>
+        </div>
       )
     },
     { 
-      header: 'Volume', 
-      accessor: 'amount', 
+      header: 'Protocol Status', 
+      accessor: 'type',
       render: (row) => (
-        <span className={cn(
-          "font-mono text-sm font-black tabular-nums tracking-tighter",
-          row.type === 'income' ? 'text-income' : 'text-expense'
-        )}>
+        <Badge variant={row.type === 'income' ? 'teal' : 'red'}>
+          {row.type === 'income' ? 'CREDIT_OK' : 'DEBIT_VERIFIED'}
+        </Badge>
+      )
+    },
+    { 
+      header: 'Transaction Volume', 
+      accessor: 'amount', 
+      className: 'text-right',
+      render: (row) => (
+        <span className={`font-bold tabular-nums tracking-tight ${row.type === 'income' ? 'text-accent-teal' : 'text-accent-red'}`}>
           {row.type === 'income' ? '+' : '-'}{formatCurrency(row.amount)}
         </span>
       )
@@ -58,65 +61,110 @@ const DashboardPage = () => {
   ];
 
   return (
-    <div className="space-y-12 pb-20 animate-in fade-in duration-700 slide-in-from-bottom-4">
-      {/* Header Actions */}
-      <div className="flex justify-end">
+    <div className="space-y-10 pb-20 animate-in">
+      {/* Telemetry Header */}
+      <div className="flex items-end justify-between">
+        <div>
+          <span className="text-[0.7rem] font-bold uppercase tracking-[0.3em] text-accent-teal mb-1 block">Operational Telemetry</span>
+          <h1 className="text-3xl font-extrabold text-text-primary tracking-tight">Active Intelligence Overview</h1>
+        </div>
         <Button 
           variant="secondary" 
           size="sm" 
           onClick={fetchAll} 
           loading={loading}
-          className="border-white/10"
+          className="h-10 px-6 border-bg-border bg-bg-surface hover:bg-bg-elevated"
         >
           <RefreshCw size={14} className={loading ? 'animate-spin mr-2' : 'mr-2'} />
-          Synchronize Intelligence
+          Sync Node Data
         </Button>
       </div>
 
-      {/* Summary Row */}
-      <SummaryCards summary={summary} loading={loading} />
-
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-        <Card title="Revenue Flow Engine" subtitle="Real-time transaction volume analytics" className="lg:col-span-3 h-full" noPadding variant="glass">
-          <div className="p-10 pb-0">
-            <TrendChart data={trends} />
-          </div>
-        </Card>
-        
-        <Card title="Capital Allocation" subtitle="Diversification porfolio by category" className="lg:col-span-2 h-full" noPadding variant="glass">
-          <div className="p-10">
-            <CategoryChart data={categories} />
-          </div>
-        </Card>
+      {/* Hero Metrics Row */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCard 
+          label="Total Managed Assets" 
+          value={summary.balance} 
+          delta="+4.2% since interval" 
+          icon={Wallet} 
+          variant="teal" 
+          isHero 
+        />
+        <StatCard 
+          label="Interval Gross Revenue" 
+          value={summary.income} 
+          delta="+12.4% vs prev week" 
+          icon={TrendingUp} 
+          variant="green" 
+        />
+        <StatCard 
+          label="System Operational Expense" 
+          value={summary.expense} 
+          delta="-2.1% automated yield" 
+          isNegative 
+          icon={Activity} 
+          variant="red" 
+        />
       </div>
 
-      {/* Recent Activity */}
-      <Card 
-        title="Recent Ledger Activity" 
-        subtitle="Latest 10 transactions verified by system"
-        action={
-          <Link to="/transactions">
-            <Button variant="ghost" size="sm" className="font-black text-accent tracking-[0.2em] group">
-              View Journal <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+      {/* Data Visualization Cluster */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8 p-8 rounded-lg bg-bg-surface border border-bg-border shadow-card relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-lg font-bold text-text-primary tracking-tight flex items-center gap-2">
+                <BarChart3 size={18} className="text-accent-teal" />
+                Capital Flow Engine
+              </h3>
+              <p className="text-xs text-text-dim font-medium uppercase tracking-widest mt-1">Real-time throughput analytics</p>
+            </div>
+            <Badge variant="blue" className="bg-accent-blue/5 border-accent-blue/20">LIVE_TELEMETRY</Badge>
+          </div>
+          <div className="h-[300px] w-full">
+            <TrendChart data={trends} />
+          </div>
+        </div>
+        
+        <div className="lg:col-span-4 p-8 rounded-lg bg-bg-surface border border-bg-border shadow-card relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-lg font-bold text-text-primary tracking-tight flex items-center gap-2">
+                <PieChart size={18} className="text-accent-blue" />
+                Resource Allocation
+              </h3>
+              <p className="text-xs text-text-dim font-medium uppercase tracking-widest mt-1">Portfolio sector density</p>
+            </div>
+          </div>
+          <div className="h-[300px] w-full">
+            <CategoryChart data={categories} />
+          </div>
+        </div>
+      </div>
+
+      {/* Primary Ledger Terminal */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-bold text-text-primary tracking-tight flex items-center gap-2">
+              <Shield size={18} className="text-accent-teal" strokeWidth={2.5} />
+              Verified Ledger Activity
+            </h3>
+            <p className="text-xs text-text-dim font-medium uppercase tracking-widest mt-1">Latest 10 transitions recorded on node</p>
+          </div>
+          <Link to="/transactions" className="group flex items-center gap-1.5 text-xs font-bold text-accent-teal hover:text-white transition-colors uppercase tracking-[0.15em]">
+            Access Full Journal
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
-        }
-        noPadding
-      >
-        <Table 
+        </div>
+        
+        <DataTable 
           columns={recentColumns} 
           data={recent} 
           loading={loading} 
-          emptyMessage="No historical data found in the current cycle"
         />
-      </Card>
+      </div>
     </div>
   );
-};
-
-const cn = (...inputs) => {
-  return inputs.filter(Boolean).join(' ');
 };
 
 export default DashboardPage;

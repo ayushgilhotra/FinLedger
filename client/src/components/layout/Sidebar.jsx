@@ -6,10 +6,11 @@ import {
   Users, 
   UserCircle, 
   LogOut,
-  TrendingUp,
-  ReceiptText,
-  Trophy,
-  LineChart
+  BarChart3,
+  FileText,
+  Activity,
+  Settings,
+  Hexagon
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { getInitials } from '../../utils/formatters';
@@ -23,74 +24,120 @@ const Sidebar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const navItems = [
-    { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', roles: ['admin', 'analyst', 'user'] },
-    { label: 'Journal', icon: ArrowLeftRight, path: '/transactions', roles: ['admin', 'analyst', 'user'] },
-    { label: 'Payment History', icon: ReceiptText, path: '/history', roles: ['admin', 'analyst', 'user'] },
-    { label: 'Leaderboard', icon: Trophy, path: '/leaderboard', roles: ['admin', 'analyst', 'user'] },
-    { label: 'Top Investors', icon: LineChart, path: '/investors', roles: ['admin', 'analyst'] },
-    { label: 'Users', icon: Users, path: '/users', roles: ['admin'] },
-    { label: 'Profile', icon: UserCircle, path: '/profile', roles: ['admin', 'analyst', 'user'] },
+  const sections = [
+    {
+      title: 'Main',
+      items: [
+        { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard', roles: ['admin', 'analyst', 'user'] },
+        { label: 'Transactions', icon: ArrowLeftRight, path: '/transactions', roles: ['admin', 'analyst', 'user'] },
+        { label: 'Analytics', icon: BarChart3, path: '/leaderboard', roles: ['admin', 'analyst', 'user'] },
+      ]
+    },
+    {
+      title: 'Management',
+      roles: ['admin', 'analyst'],
+      items: [
+        { label: 'Users', icon: Users, path: '/users', roles: ['admin'] },
+        { label: 'Reports', icon: FileText, path: '/investors', roles: ['admin', 'analyst'] },
+      ]
+    },
+    {
+      title: 'System',
+      items: [
+        { label: 'Status', icon: Activity, path: '/status', roles: ['admin', 'analyst', 'user'] },
+        { label: 'Settings', icon: Settings, path: '/profile', roles: ['admin', 'analyst', 'user'] },
+      ]
+    }
   ];
-
-  const filteredNavItems = navItems.filter(item => item.roles.includes(user?.role));
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const getRoleColor = (role) => {
+    switch (role?.toLowerCase()) {
+      case 'admin': return 'teal';
+      case 'analyst': return 'purple';
+      default: return 'blue';
+    }
+  };
+
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-72 border-r border-white/5 glass flex flex-col transition-all duration-500">
+    <aside className="fixed left-0 top-0 z-40 h-screen w-[240px] bg-bg-base border-r border-bg-border flex flex-col transition-all duration-300">
       {/* Logo */}
-      <div className="flex h-24 items-center px-10 gap-4">
-        <div className="h-10 w-10 rounded-2xl bg-accent flex items-center justify-center text-bg-base shadow-neon">
-          <TrendingUp size={24} strokeWidth={3} />
+      <div className="flex h-20 items-center px-6 gap-3">
+        <div className="text-accent-teal">
+          <Hexagon size={24} fill="currentColor" fillOpacity={0.2} strokeWidth={2.5} />
         </div>
-        <h1 className="text-2xl font-display font-black tracking-tight text-white uppercase italic">
-          Fin<span className="text-accent">Ledger</span>
+        <h1 className="text-xl font-bold tracking-tight text-white">
+          Fin<span className="text-accent-teal">Ledger</span>
         </h1>
       </div>
 
-      {/* Nav Links */}
-      <nav className="flex-1 space-y-2 px-6 py-6 overflow-y-auto">
-        {filteredNavItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => cn(
-              'group flex items-center gap-4 rounded-[1.5rem] px-5 py-3.5 text-sm font-bold uppercase tracking-widest transition-all duration-300',
-              isActive 
-                ? 'glass-light text-accent shadow-sm translate-x-1 outline outline-1 outline-accent/20' 
-                : 'text-text-secondary hover:bg-white/5 hover:text-white'
-            )}
-          >
-            <item.icon size={20} className={cn(
-              "transition-all duration-300",
-              "group-hover:scale-110"
-            )} />
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
+      {/* Nav Content */}
+      <div className="flex-1 overflow-y-auto py-4 modern-scrollbar">
+        {sections.map((section, idx) => {
+          const visibleItems = section.items.filter(item => item.roles.includes(user?.role));
+          if (visibleItems.length === 0) return null;
 
-      {/* User Info */}
-      <div className="border-t border-white/5 p-8 glass-light">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-bg-base font-black shadow-neon">
+          return (
+            <div key={idx} className="mb-8">
+              <h3 className="px-6 mb-3 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-text-dim/60">
+                {section.title}
+              </h3>
+              <div className="space-y-1">
+                {visibleItems.map((item) => (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    className={({ isActive }) => cn(
+                      'flex items-center gap-3 px-6 py-2.5 text-[0.875rem] font-medium transition-all duration-150 relative group',
+                      isActive 
+                        ? 'text-accent-teal bg-accent-teal/5' 
+                        : 'text-text-secondary hover:bg-white/[0.04] hover:text-text-primary'
+                    )}
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {isActive && <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent-teal rounded-r-full shadow-teal-glow" />}
+                        <item.icon size={18} className={cn(
+                          "transition-colors",
+                          isActive ? "text-accent-teal" : "group-hover:text-text-primary"
+                        )} />
+                        {item.label}
+                      </>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* User Section */}
+      <div className="p-4 border-t border-bg-border bg-bg-base/50 backdrop-blur-md">
+        <div className="flex items-center gap-3 mb-4 px-2">
+          <div className={cn(
+            "flex h-10 w-10 items-center justify-center rounded-btn font-bold text-bg-base shadow-sm",
+            `bg-accent-${getRoleColor(user?.role)}`
+          )}>
             {getInitials(user?.name)}
           </div>
-          <div className="flex-1 overflow-hidden">
-            <p className="text-sm font-black text-white truncate uppercase tracking-tight">{user?.name}</p>
-            <p className="text-[10px] font-black uppercase tracking-widest text-accent mt-0.5">{user?.role}</p>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-text-primary truncate">{user?.name}</p>
+            <Badge variant={getRoleColor(user?.role)} className="mt-0.5">
+              {user?.role}
+            </Badge>
           </div>
         </div>
         <button 
           onClick={handleLogout}
-          className="group flex w-full items-center justify-center gap-3 rounded-2xl px-3 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-expense hover:bg-expense/10 border border-expense/20 transition-all duration-300 active:scale-95"
+          className="flex w-full items-center justify-center gap-2 px-3 py-2 rounded-btn text-[0.75rem] font-bold uppercase tracking-widest text-text-secondary hover:bg-white/5 hover:text-accent-red border border-transparent hover:border-accent-red/20 transition-all duration-200"
         >
-          <LogOut size={16} strokeWidth={3} />
-          Logout System
+          <LogOut size={14} />
+          Sign Out
         </button>
       </div>
     </aside>

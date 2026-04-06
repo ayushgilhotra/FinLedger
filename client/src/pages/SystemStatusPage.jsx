@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
-import { Shield, Activity, Database, Server, RefreshCw, AlertCircle, CheckCircle2, Cpu, ChevronRight } from 'lucide-react';
-import Card from '../components/ui/Card';
+import { Shield, Activity, Database, Server, RefreshCw, AlertCircle, CheckCircle2, Cpu, ChevronRight, HardDrive, Network, Zap } from 'lucide-react';
+import StatCard from '../components/ui/StatCard';
 import Button from '../components/ui/Button';
+import Badge from '../components/ui/Badge';
 import { formatCurrency } from '../utils/formatters';
+import { Link } from 'react-router-dom';
 
 const SystemStatusPage = () => {
   const [data, setData] = useState(null);
@@ -45,130 +47,151 @@ const SystemStatusPage = () => {
     fetchStatus();
   }, []);
 
+  const nodes = [
+    { label: 'API Gateway', desc: 'Load Balanced Cluster v1.0.4', active: !error, icon: Server },
+    { label: 'Database Cluster', desc: 'MongoDB Atlas - Replica Set', active: !!data, icon: Database },
+    { label: 'Intelligence Engine', desc: 'Neural Ledger Processor', active: true, icon: Cpu },
+  ];
+
   return (
-    <div className="min-h-screen bg-bg-base text-text-primary p-10 md:p-20 relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-[-20%] left-[-10%] h-[70%] w-[70%] rounded-full bg-accent/5 blur-[150px]" />
-      <div className="absolute bottom-[-10%] right-[-5%] h-[60%] w-[60%] rounded-full bg-indigo-500/5 blur-[150px]" />
-      
-      <div className="max-w-6xl mx-auto space-y-16 relative z-10 animate-in fade-in duration-1000">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full glass border-white/10 mb-2">
-              <Shield size={16} className="text-accent" strokeWidth={3} />
-              <span className="text-[11px] font-black uppercase tracking-[0.3em] text-accent">Root Diagnostic Mode</span>
-            </div>
-            <h1 className="text-6xl font-display font-black text-white tracking-tighter uppercase italic">
-              System <span className="text-accent">Integrity</span>
-            </h1>
-            <p className="text-text-secondary text-lg font-black uppercase tracking-widest max-w-2xl">Real-time telemetry of the FinLedger infrastructure layer.</p>
-          </div>
-          <Button 
-            onClick={handleRecalibrate} 
-            loading={recalibrating} 
-            className="h-16 shadow-neon"
-          >
-            <RefreshCw size={20} className={recalibrating ? 'animate-spin mr-3' : 'mr-3'} strokeWidth={3} />
-            Initialize Recalibration
-          </Button>
+    <div className="space-y-10 pb-20 animate-in">
+      {/* Telemetry Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <span className="text-[0.7rem] font-bold uppercase tracking-[0.3em] text-accent-teal mb-1 block">Infrastructure Layer</span>
+          <h1 className="text-3xl font-extrabold text-text-primary tracking-tight">System Integrity Monitor</h1>
+          <p className="text-sm text-text-dim font-medium mt-2 max-w-xl">
+            Real-time telemetry of the FinLedger institutional-grade decentralized infrastructure.
+          </p>
         </div>
+        <Button 
+          onClick={handleRecalibrate} 
+          loading={recalibrating} 
+          className="h-12 px-8 shadow-teal-glow"
+        >
+          <RefreshCw size={18} className={recalibrating ? 'animate-spin mr-3' : 'mr-3'} />
+          Recalibrate Intelligence
+        </Button>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Infrastructure status grid */}
-          <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-10">
-            <Card variant="glass" className="rounded-[3rem] p-4 border-white/10 shadow-2xl" title="Infrastructure Nodes" subtitle="Live cluster status monitor">
-              <div className="space-y-6 pt-4">
-                {[
-                    { label: 'API Gateway', desc: 'Load Balanced Cluster v1.0.4', active: !error, icon: Server },
-                    { label: 'Database Cluster', desc: 'MongoDB Atlas - Replica Set', active: !!data, icon: Database },
-                    { label: 'Intelligence Engine', desc: 'Neural Ledger Processor', active: true, icon: Cpu },
-                ].map((node, i) => (
-                    <div key={i} className="flex items-center justify-between p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all duration-300 group">
-                        <div className="flex items-center gap-5">
-                            <div className={cn(
-                                "p-4 rounded-2xl transition-all duration-500",
-                                node.active ? "bg-accent/10 text-accent group-hover:scale-110" : "bg-bg-elevated text-text-muted"
-                            )}>
-                                <node.icon size={24} strokeWidth={3} />
-                            </div>
-                            <div>
-                                <p className="text-sm font-black uppercase tracking-widest text-white">{node.label}</p>
-                                <p className="text-[10px] font-black uppercase tracking-tight text-text-secondary mt-0.5">{node.desc}</p>
-                            </div>
-                        </div>
-                        {node.active ? (
-                            <div className="flex items-center gap-2 text-income px-4 py-1.5 rounded-full bg-income/10 text-[9px] font-black uppercase tracking-[0.2em] shadow-sm">
-                                NOMINAL <CheckCircle2 size={12} strokeWidth={3} />
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-2 text-expense px-4 py-1.5 rounded-full bg-expense/10 text-[9px] font-black uppercase tracking-[0.2em]">
-                                OFFLINE <AlertCircle size={12} strokeWidth={3} />
-                            </div>
-                        )}
-                    </div>
-                ))}
-              </div>
-            </Card>
+      {/* Critical Infrastructure Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StatCard 
+          label="Gross Network Throughput" 
+          value={data?.metrics?.totalIncome || 0} 
+          icon={Zap} 
+          variant="teal" 
+          isHero 
+        />
+        <StatCard 
+          label="Operational Latency" 
+          value={data?.metrics?.totalExpenses || 0} 
+          icon={Activity} 
+          variant="amber" 
+          delta="12ms avg baseline"
+        />
+        <StatCard 
+          label="Sovereign Ledger Assets" 
+          value={data?.metrics?.netBalance || 0} 
+          icon={Shield} 
+          variant="blue" 
+        />
+      </div>
 
-            <Card variant="glass" className="rounded-[3rem] p-4 border-white/10 shadow-2xl" title="Real-time Telemetry" subtitle="Financial through-put analysis">
-                {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20 space-y-6 animate-pulse">
-                        <Activity size={60} className="text-accent opacity-20" strokeWidth={3} />
-                        <span className="text-[11px] font-black uppercase tracking-[0.4em] text-text-muted">Analyzing Streams...</span>
-                    </div>
-                ) : (
-                    <div className="space-y-8 pt-4">
-                        <div className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 space-y-2">
-                             <p className="text-[11px] font-black text-text-secondary uppercase tracking-[0.3em]">Gross Network Volume</p>
-                             <p className="text-4xl font-display font-black text-income tabular-nums tracking-tighter">{formatCurrency(data?.metrics?.totalIncome || 0)}</p>
-                        </div>
-                        <div className="p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 space-y-2">
-                             <p className="text-[11px] font-black text-text-secondary uppercase tracking-[0.3em]">Operational Outflow</p>
-                             <p className="text-4xl font-display font-black text-expense tabular-nums tracking-tighter">{formatCurrency(data?.metrics?.totalExpenses || 0)}</p>
-                        </div>
-                        <div className="p-8 rounded-[2rem] bg-accent/5 border border-accent/20 space-y-2">
-                             <p className="text-[11px] font-black text-accent uppercase tracking-[0.3em]">Net Ledger Gravity</p>
-                             <p className="text-4xl font-display font-black text-white tabular-nums tracking-tighter shadow-neon">{formatCurrency(data?.metrics?.netBalance || 0)}</p>
-                        </div>
-                    </div>
-                )}
-            </Card>
+      {/* Node Status & Health Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8 space-y-6">
+          <div className="flex items-center gap-3 px-2">
+            <Network size={18} className="text-accent-teal" />
+            <span className="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-text-primary">Cluster Node Distribution</span>
           </div>
-
-          <Card variant="glass" className="rounded-[3rem] border-white/10 p-4" title="Event Horizon" subtitle="Recent infrastructure events">
-             <div className="space-y-4 pt-4">
-                {[...Array(5)].map((_, i) => (
-                    <div key={i} className="p-5 rounded-2xl border border-white/5 bg-white/[0.01] flex items-center justify-between group hover:bg-white/[0.03] transition-all">
-                        <div className="space-y-1">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-white">Consolidated Audit {i+1}</p>
-                            <p className="text-[9px] font-black uppercase tracking-tight text-text-secondary opacity-70">Timestamp: Node_X{i+100}</p>
-                        </div>
-                        <div className="h-2 w-2 rounded-full bg-accent shadow-neon animate-pulse" />
-                    </div>
-                ))}
-                <div className="pt-6">
-                    <div className="p-6 rounded-[2rem] bg-indigo-500/5 border border-indigo-500/10 text-center">
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-text-muted mb-2">Diagnostic Key</p>
-                        <p className="text-xs font-mono font-black text-indigo-400 tracking-tighter uppercase">{Math.random().toString(36).substring(2, 15).toUpperCase()}</p>
-                    </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {nodes.map((node, i) => (
+              <div key={i} className="bg-bg-surface border border-bg-border p-6 rounded-lg shadow-card group hover:border-accent-teal/30 transition-all">
+                <div className="flex items-start justify-between mb-6">
+                  <div className={`p-3 rounded-btn ${node.active ? 'bg-accent-teal/10 text-accent-teal' : 'bg-bg-base text-text-dim'}`}>
+                    <node.icon size={24} />
+                  </div>
+                  <Badge variant={node.active ? 'teal' : 'red'}>
+                    {node.active ? 'NOMINAL' : 'OFFLINE'}
+                  </Badge>
                 </div>
-             </div>
-          </Card>
+                <div className="space-y-1">
+                  <h3 className="text-base font-bold text-text-primary">{node.label}</h3>
+                  <p className="text-[0.7rem] font-bold uppercase tracking-wider text-text-dim">{node.desc}</p>
+                </div>
+                <div className="mt-6 pt-6 border-t border-bg-border flex items-center justify-between text-[0.65rem] font-bold uppercase tracking-widest text-text-dim/60">
+                   <span>Node ID: GAL-PRX-0{i+1}</span>
+                   <span>Uptime: 99.9%</span>
+                </div>
+              </div>
+            ))}
+            
+            {/* Expansion Card */}
+            <div className="bg-bg-base border border-dashed border-bg-border p-6 rounded-lg flex flex-col items-center justify-center text-center opacity-60 hover:opacity-100 transition-all cursor-pointer group">
+              <div className="h-12 w-12 rounded-full border-2 border-dashed border-bg-border flex items-center justify-center text-text-dim group-hover:text-accent-teal group-hover:border-accent-teal transition-all mb-4">
+                <Plus size={20} />
+              </div>
+              <span className="text-[0.7rem] font-bold uppercase tracking-widest text-text-dim">Provision Node</span>
+            </div>
+          </div>
         </div>
 
-        <div className="text-center pt-10">
-          <Link to="/login" className="group inline-flex items-center gap-4 text-sm font-black uppercase tracking-[0.3em] text-text-muted hover:text-white transition-all duration-500">
-             Return to Access Terminal <ChevronRight size={18} className="translate-x-0 group-hover:translate-x-2 transition-transform" strokeWidth={3} />
-          </Link>
+        <div className="lg:col-span-4 space-y-6">
+          <div className="flex items-center gap-3 px-2">
+            <Activity size={18} className="text-accent-blue" />
+            <span className="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-text-primary">Event Stream</span>
+          </div>
+
+          <div className="bg-bg-surface border border-bg-border rounded-lg shadow-card overflow-hidden">
+            <div className="p-6 space-y-4">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex items-start gap-3 pb-4 border-b border-bg-border last:border-0 last:pb-0">
+                  <div className="mt-1 h-2 w-2 rounded-full bg-accent-teal shadow-teal-glow animate-pulse shrink-0" />
+                  <div className="space-y-1">
+                    <p className="text-[0.75rem] font-bold text-text-primary">Audit Cycle {842+i} Initialized</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-text-dim opacity-70">
+                      Timestamp: {1200 + i*15}ms offset
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="p-4 bg-bg-base/50 text-center">
+              <button className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-accent-blue hover:text-white transition-colors">
+                Decrypt Full Log
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div className="text-center pt-10">
+        <Link to="/login" className="group inline-flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em] text-text-dim hover:text-white transition-all">
+          <ChevronRight size={18} className="rotate-180" />
+          Access Terminal
+        </Link>
       </div>
     </div>
   );
 };
 
-const cn = (...inputs) => inputs.filter(Boolean).join(' ');
-
-// Dummy Link for component context
-const Link = ({ to, children, className }) => <a href={to} className={className}>{children}</a>;
+const Plus = ({ size, className }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M5 12h14" />
+    <path d="M12 5v14" />
+  </svg>
+);
 
 export default SystemStatusPage;

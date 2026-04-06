@@ -1,85 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-base: #000511;
-  --bg-surface: #050a1b;
-  --bg-elevated: #0a1024;
-  --bg-border: rgba(255,255,255,0.05);
-  --accent: #00C2E0;
-  --accent-hover: #009bb3;
-  --accent-glow: rgba(0, 194, 224, 0.15);
-  --income: #00d4a0;
-  --expense: #ff4d6d;
-  --warning: #f5a623;
-  --info: #00C2E0;
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
+  --color-bg-base: #060D1A;
+  --color-bg-surface: #0B1628;
+  --color-bg-elevated: #112240;
+  --color-border: #1E3A5F;
+  --color-border-active: #2E6EA6;
+
+  --color-accent-teal: #00D4AA;
+  --color-accent-green: #00F5A0;
+  --color-accent-blue: #4FA3E3;
+  --color-accent-purple: #8B5CF6;
+  --color-accent-amber: #F59E0B;
+  --color-accent-red: #EF4444;
+
+  --color-text-primary: #E8F4FD;
+  --color-text-secondary: #7DA3C4;
+  --color-text-dim: #3D6080;
+
+  --gradient-teal: linear-gradient(135deg, #00D4AA 0%, #00F5A0 100%);
+  --gradient-blue: linear-gradient(135deg, #1E3A5F 0%, #2E6EA6 100%);
+  --gradient-card: linear-gradient(145deg, #0B1628 0%, #112240 100%);
+  --gradient-glow-teal: radial-gradient(circle, rgba(0, 212, 170, 0.15) 0%, transparent 70%);
+  --gradient-hero: linear-gradient(160deg, #060D1A 0%, #091929 50%, #0D2137 100%);
 }
 
 @layer base {
   body {
     @apply bg-bg-base text-text-primary antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+  }
+
+  ::selection {
+    background-color: rgba(0, 212, 170, 0.3);
+    color: #00D4AA;
+  }
+
+  ::-moz-selection {
+    background-color: rgba(0, 212, 170, 0.3);
+    color: #00D4AA;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-bg-surface/80 backdrop-blur-xl border border-bg-border shadow-card;
+  }
+
+  .glass-elevated {
+    @apply bg-bg-elevated/80 backdrop-blur-xl border border-bg-border shadow-card;
+  }
+
+  .neon-glow-teal {
+    @apply shadow-[0_0_40px_rgba(0,212,170,0.12)];
+  }
+
+  .neon-glow-blue {
+    @apply shadow-[0_0_30px_rgba(78,163,227,0.1)];
+  }
+
+  .modern-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-active) var(--color-bg-base);
   }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  @apply w-1.5 h-1.5;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-base);
+  @apply bg-bg-base;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 10px;
+  @apply bg-bg-border-active rounded-full transition-colors hover:bg-text-dim;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+/* Typography Overrides */
+.font-display {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
 }
 
-/* Page Transitions */
-.page-fade-in {
-  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.mono-data {
+  font-family: 'JetBrains Mono', monospace;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+/* Transitions */
+.hover-lift {
+  @apply transition-lift duration-200 hover:-translate-y-1 hover:shadow-hero-lift;
+}
+
+/* Page Load Animation */
+.animate-in {
+  animation: entrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes entrance {
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-/* Glassmorphism */
-.glass {
-  background: rgba(5, 10, 27, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--bg-border);
-}
-
-.glass-light {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Glow Shadow */
-.shadow-neon {
-  box-shadow: 0 0 30px var(--accent-glow);
-}
-
-/* High Radius Utils for Galileo style */
-.rounded-hyper {
-  border-radius: 3rem;
-}
-
-.rounded-mega {
-  border-radius: 4rem;
 }
