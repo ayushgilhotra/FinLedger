@@ -23,10 +23,11 @@ app.use('/api/dashboard', dashboardRoutes);
 const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
 
-// SPA Catch-all rule for React Router
-app.get('/:path*', (req, res, next) => {
-  // If request begins with /api, it's a 404
-  if (req.url.startsWith('/api/')) {
+// SPA Fallback for React Router
+// Using middleware instead of a route to bypass path-to-regexp v8 string constraints
+app.use((req, res, next) => {
+  // If request begins with /api or has an extension (static files), don't catch it
+  if (req.url.startsWith('/api/') || req.url.includes('.')) {
     return next();
   }
   res.sendFile(path.join(publicPath, 'index.html'));
