@@ -92,14 +92,14 @@ const DashboardPage = () => {
         />
         <StatCard 
           label="Interval Gross Revenue" 
-          value={summary.income} 
+          value={summary?.income || 0} 
           delta="+12.4% vs prev week" 
           icon={TrendingUp} 
           variant="green" 
         />
         <StatCard 
           label="System Operational Expense" 
-          value={summary.expense} 
+          value={summary?.expense || 0} 
           delta="-2.1% automated yield" 
           isNegative 
           icon={Activity} 
