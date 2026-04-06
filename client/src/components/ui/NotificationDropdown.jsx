@@ -1,3 +1,4 @@
+import { cn } from '../../utils/cn';
 import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { TrendingUp, TrendingDown, ArrowRight, CheckCircle2, Inbox } from 'lucide-react';

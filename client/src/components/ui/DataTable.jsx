@@ -1,3 +1,4 @@
+import { cn } from '../../utils/cn';
 import React from 'react';
 import { useCountUp } from '../../hooks/useCountUp';
 import { formatCurrency } from '../../utils/formatters';

@@ -7,8 +7,11 @@ import NotificationDropdown from '../ui/NotificationDropdown';
 import { dashboardApi } from '../../api/dashboard.api';
 import GlassInput from '../ui/GlassInput';
 
+import { cn } from '../../utils/cn';
+
 const TopBar = () => {
-  const { user } = useAuth();
+  const auth = useAuth() || {};
+  const { user } = auth;
   const location = useLocation();
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);

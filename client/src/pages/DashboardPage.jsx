@@ -84,7 +84,7 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatCard 
           label="Total Managed Assets" 
-          value={summary.balance} 
+          value={summary?.balance || 0} 
           delta="+4.2% since interval" 
           icon={Wallet} 
           variant="teal" 

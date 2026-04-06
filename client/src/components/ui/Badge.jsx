@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '../../utils/cn';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 

@@ -1,3 +1,4 @@
+import { cn } from '../../utils/cn';
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { clsx } from 'clsx';

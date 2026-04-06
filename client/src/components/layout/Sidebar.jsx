@@ -18,10 +18,11 @@ import Badge from '../ui/Badge';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
+import { cn } from '../../utils/cn';
 
 const Sidebar = () => {
-  const { user, logout } = useAuth();
+  const auth = useAuth() || {};
+  const { user, logout } = auth;
   const navigate = useNavigate();
 
   const sections = [
