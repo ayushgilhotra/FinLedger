@@ -53,7 +53,7 @@ const RegisterPage = () => {
                 <User className="absolute right-4 top-10 text-text-muted transition-colors group-focus-within:text-accent" size={18} />
                 <Input
                   label="Full Name"
-                  placeholder="John Doe"
+                  placeholder="abc"
                   {...register('name', { required: 'Name is required' })}
                   error={errors.name?.message}
                 />
@@ -77,14 +77,19 @@ const RegisterPage = () => {
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-black uppercase tracking-widest text-text-muted ml-1">Assigned Role</label>
                   <select 
-                    className="w-full h-12 px-4 rounded-xl border border-bg-border/50 bg-bg-card/50 text-white text-sm focus:outline-none focus:border-accent transition-colors appearance-none cursor-pointer"
+                    className="w-full h-12 px-4 rounded-xl border border-bg-border/50 bg-bg-elevated text-white text-sm focus:outline-none focus:border-accent/80 transition-all appearance-none cursor-pointer hover:bg-bg-elevated/80"
                     {...register('role', { required: 'Role is required' })}
                   >
-                    <option value="user" className="bg-bg-card text-white">Regular User</option>
-                    <option value="analyst" className="bg-bg-card text-white">Financial Analyst</option>
-                    <option value="admin" className="bg-bg-card text-white">System Admin</option>
+                    <option value="user" className="bg-[#111111] text-white">Regular User (Financial Baseline)</option>
+                    <option value="analyst" className="bg-[#111111] text-white">Financial Analyst (Expert Analysis)</option>
+                    <option value="admin" className="bg-[#111111] text-white">System Admin (Full Authorization)</option>
                   </select>
+                  {/* Custom Arrow for select */}
+                  <div className="pointer-events-none absolute right-4 top-[2.4rem] text-text-muted">
+                    <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" /></svg>
+                  </div>
                 </div>
+                {errors.role && <p className="mt-1 text-[10px] font-bold text-expense font-display ml-1">{errors.role.message}</p>}
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
