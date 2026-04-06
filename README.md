@@ -1,47 +1,71 @@
-# FinLedger | Finance Dashboard Monorepo
+# 💎 FinLedger: Modern FinTech Analytics Dashboard
 
-A high-end, data-dense fintech dashboard system built with React 18, Express, and SQLite.
+FinLedger is a high-performance, professional financial analytics dashboard designed to provide real-time insights into personal or corporate wealth. Built with a modern tech stack and focusing on baseline-perfect typography, it offers a glassmorphism-inspired UI with robust role-based access control.
 
-## Project Structure
+![FinLedger Dashboard Overview](https://via.placeholder.com/1200x600/0a0a0a/ffffff?text=FinLedger+Modern+Dashboard)
 
-- `server/`: Express.js backend with SQLite (better-sqlite3) and JWT auth.
-- `client/`: Vite-powered React frontend with Tailwind CSS and Recharts.
+## 🚀 Key Features
 
-## Setup & Running
+### 📊 Professional Analytics
+- **Baseline-Perfect Summary Cards**: Numeric values are strictly aligned to a common baseline grid using `tabular-nums` for professional financial presentation.
+- **Dynamic Trend Visualization**: Interactive charts showing monthly income vs. expenses.
+- **Category Allocation**: Granular breakdown of spending habits using interactive doughnut charts.
 
-1.  **Install all dependencies**:
-    ```bash
-    npm run install:all
-    ```
-2.  **Run Development Environment**:
-    Starts both the backend (port 3000) and the frontend (port 5173).
-    ```bash
-    npm run dev
-    ```
+### 🔔 Advanced Notification System
+- **Stateful Activity Hub**: Professional notification dropdown with backdrop-blur effects.
+- **Real-Time Feeds**: Stay updated with the 10 most recent transactions as they happen.
 
-## Default Credentials
+### 🏆 Role-Based Access Control (RBAC)
+- **Admin**: Full system audit, user management, and high-equity investor tracking.
+- **Analyst**: Access to global trends, leaderboard insights, and investor portfolios.
+- **User**: Personal financial journal, payment history, and global leaderboard rank.
 
-- **Admin Account**: `admin@finance.com` / `admin123`
-- **Analyst Account**: Register a new user and change role in the User Management tab (Admin only).
+### 🛡️ Resilience & Diagnostics
+- **System Status Page**: Public diagnostic mode for real-time infrastructure health tracking.
+- **Global Error Boundaries**: Robust error handling to ensure application stability under stress.
 
-## Role Capabilities
+## 🛠️ Tech Stack
+- **Frontend**: React (Vite), Tailwind CSS, Lucide Icons, Framer Motion.
+- **Backend**: Node.js, Express.js, Mongoose.
+- **Database**: MongoDB (Production ready).
+- **Authentication**: JWT (JSON Web Tokens).
 
-| Feature | Admin | Analyst | Viewer |
-| :--- | :---: | :---: | :---: |
-| View Dashboard | ✅ | ✅ | ✅ |
-| View Transactions | ✅ | ✅ | ✅ (Own Only) |
-| Create Transaction | ✅ | ✅ | ❌ |
-| Edit Transaction | ✅ (All) | ✅ (Own Only) | ❌ |
-| Delete Transaction | ✅ (All) | ✅ (Own Only) | ❌ |
-| Manage Users | ✅ | ❌ | ❌ |
+## ⚙️ Installation & Setup
 
-## Global Design System
+### 1. Clone the repository
+```bash
+git clone https://github.com/ayushgilhotra/FinLedger.git
+cd FinLedger
+```
 
-- **Primary Colors**: Cyan-Teal accents on a deep Blue-Noir background.
-- **Typography**: Geometric Syne for display, professional IBM Plex Sans for body.
-- **Charts**: Interactive Recharts with dark-theme integration.
-- **Auth**: Secure JWT persistence with localStorage and Axios interceptors.
+### 2. Configure Environment Variables
+Create a `.env` file in the `server/` directory based on `.env.example`.
 
-## How to Change API URL
+### 3. Backend Setup
+```bash
+cd server
+npm install
+node src/server.js
+```
 
-Update `VITE_API_URL` in the root `.env` file.
+### 4. Frontend Setup
+```bash
+cd ../client
+npm install
+npm run dev
+```
+
+## 🌐 Deployment Checklist
+
+### Backend (Render/Railway)
+1. Set the root directory to `server/`.
+2. Configure `MONGO_URI` and `JWT_SECRET` in environment variables.
+3. Use `node src/server.js` as the start command.
+
+### Frontend (Vercel/Netlify)
+1. Set the root directory to `client/`.
+2. Configure `VITE_API_URL` pointing to your deployed backend.
+3. Use `npm run build` as the build command and `dist/` as the publish directory.
+
+---
+Managed by **AuthenTick Architecture** 💎

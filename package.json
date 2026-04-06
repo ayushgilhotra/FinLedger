@@ -1,18 +1,21 @@
 {
-  "name": "fintech",
+  "name": "finledger-monolith",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Production-ready monolith for the FinLedger analytics dashboard",
+  "main": "server/src/server.js",
   "scripts": {
-    "dev:server": "cd server && npm run dev",
-    "dev:client": "cd client && npx vite",
-    "dev": "concurrently -n \"server,client\" -c \"bgBlue,bgGreen\" \"npm run dev:server\" \"npm run dev:client\"",
-    "install:all": "npm install && cd server && npm install && cd ../client && npm install"
+    "install:all": "npm install --prefix client && npm install --prefix server",
+    "build:client": "npm run build --prefix client && mkdir -p server/public && rm -rf server/public/* && cp -r client/dist/* server/public/",
+    "build:server": "npm install --prefix server",
+    "build": "npm run install:all && npm run build:client",
+    "start": "node server/src/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "concurrently": "^9.2.1"
-  }
+  "keywords": [
+    "fintech",
+    "dashboard",
+    "monolith",
+    "deployment"
+  ],
+  "author": "ayushgilhotra",
+  "license": "MIT"
 }
