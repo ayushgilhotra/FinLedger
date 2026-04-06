@@ -27,27 +27,30 @@ const DashboardPage = () => {
 
   const recentColumns = [
     { 
-      header: 'Date', 
+      header: 'Settlement Date', 
       accessor: 'date',
-      render: (row) => <span className="font-mono text-xs">{formatDate(row.date)}</span>
+      render: (row) => <span className="font-mono text-xs font-black tracking-widest text-text-secondary uppercase">{formatDate(row.date)}</span>
     },
     { 
-      header: 'Category', 
+      header: 'Category Type', 
       accessor: 'category',
-      render: (row) => <span className="font-bold tracking-tight">{row.category}</span>
+      render: (row) => <span className="font-black text-xs uppercase tracking-[0.1em] text-white">{row.category}</span>
     },
     { 
-      header: 'Type', 
+      header: 'System Status', 
       accessor: 'type',
       render: (row) => (
         <Badge variant={row.type}>{row.type}</Badge>
       )
     },
     { 
-      header: 'Amount', 
+      header: 'Volume', 
       accessor: 'amount', 
       render: (row) => (
-        <span className={row.type === 'income' ? 'text-income font-semibold tabular-nums tracking-normal' : 'text-expense font-semibold tabular-nums tracking-normal'}>
+        <span className={cn(
+          "font-mono text-sm font-black tabular-nums tracking-tighter",
+          row.type === 'income' ? 'text-income' : 'text-expense'
+        )}>
           {row.type === 'income' ? '+' : '-'}{formatCurrency(row.amount)}
         </span>
       )
@@ -55,7 +58,7 @@ const DashboardPage = () => {
   ];
 
   return (
-    <div className="space-y-8 pb-10">
+    <div className="space-y-12 pb-20 animate-in fade-in duration-700 slide-in-from-bottom-4">
       {/* Header Actions */}
       <div className="flex justify-end">
         <Button 
@@ -63,9 +66,10 @@ const DashboardPage = () => {
           size="sm" 
           onClick={fetchAll} 
           loading={loading}
+          className="border-white/10"
         >
-          <RefreshCw size={16} className={loading ? 'animate-spin mr-2' : 'mr-2'} />
-          Synchronize Data
+          <RefreshCw size={14} className={loading ? 'animate-spin mr-2' : 'mr-2'} />
+          Synchronize Intelligence
         </Button>
       </div>
 
@@ -73,15 +77,15 @@ const DashboardPage = () => {
       <SummaryCards summary={summary} loading={loading} />
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-        <Card title="Revenue vs Expenses" className="lg:col-span-3 h-full" noPadding>
-          <div className="p-6 pb-0">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+        <Card title="Revenue Flow Engine" subtitle="Real-time transaction volume analytics" className="lg:col-span-3 h-full" noPadding variant="glass">
+          <div className="p-10 pb-0">
             <TrendChart data={trends} />
           </div>
         </Card>
         
-        <Card title="Allocation by Category" className="lg:col-span-2 h-full" noPadding>
-          <div className="p-6">
+        <Card title="Capital Allocation" subtitle="Diversification porfolio by category" className="lg:col-span-2 h-full" noPadding variant="glass">
+          <div className="p-10">
             <CategoryChart data={categories} />
           </div>
         </Card>
@@ -89,12 +93,12 @@ const DashboardPage = () => {
 
       {/* Recent Activity */}
       <Card 
-        title="Recent Activity" 
-        subtitle="Your latest 10 transactions"
+        title="Recent Ledger Activity" 
+        subtitle="Latest 10 transactions verified by system"
         action={
           <Link to="/transactions">
-            <Button variant="ghost" size="sm" className="font-bold text-accent">
-              View Journal <ArrowRight size={16} className="ml-1" />
+            <Button variant="ghost" size="sm" className="font-black text-accent tracking-[0.2em] group">
+              View Journal <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
         }
@@ -104,11 +108,15 @@ const DashboardPage = () => {
           columns={recentColumns} 
           data={recent} 
           loading={loading} 
-          emptyMessage="No recent transactions found"
+          emptyMessage="No historical data found in the current cycle"
         />
       </Card>
     </div>
   );
+};
+
+const cn = (...inputs) => {
+  return inputs.filter(Boolean).join(' ');
 };
 
 export default DashboardPage;

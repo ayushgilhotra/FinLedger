@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { TrendingUp, Mail, Lock, LogIn, ShieldCheck, Shield, LineChart, User as UserIcon } from 'lucide-react';
+import { TrendingUp, Mail, Lock, LogIn, ShieldCheck, Shield, LineChart, User as UserIcon, ChevronRight } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
@@ -35,49 +35,52 @@ const LoginPage = () => {
       role: 'Admin', 
       email: 'admin@finance.com', 
       password: 'admin123', 
-      icon: <ShieldCheck size={16} />,
-      color: 'text-accent'
+      icon: <ShieldCheck size={18} strokeWidth={3} />,
+      color: 'text-accent',
+      desc: 'Full Infrastructure Governance'
     },
     { 
       role: 'Analyst', 
       email: 'analyst@finance.com', 
       password: 'analyst123', 
-      icon: <LineChart size={16} />,
-      color: 'text-income'
+      icon: <LineChart size={18} strokeWidth={3} />,
+      color: 'text-income',
+      desc: 'Expert Financial Intelligence'
     },
     { 
       role: 'User', 
       email: 'user@finance.com', 
       password: 'user123', 
-      icon: <UserIcon size={16} />,
-      color: 'text-text-secondary'
+      icon: <UserIcon size={18} strokeWidth={3} />,
+      color: 'text-text-secondary',
+      desc: 'Baseline Portfolio Access'
     },
   ];
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-bg-base p-4 relative overflow-hidden py-12">
+    <div className="flex min-h-screen w-full items-center justify-center bg-bg-base p-6 relative overflow-hidden py-20">
       {/* Background Decor */}
-      <div className="absolute top-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-accent/10 blur-[120px]" />
-      <div className="absolute bottom-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full bg-expense/10 blur-[120px]" />
+      <div className="absolute top-[-20%] right-[-10%] h-[70%] w-[70%] rounded-full bg-accent/5 blur-[150px]" />
+      <div className="absolute bottom-[-20%] left-[-10%] h-[70%] w-[70%] rounded-full bg-indigo-500/5 blur-[150px]" />
 
-      <div className="w-full max-w-md z-10 space-y-8">
-        <div className="text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-bg-base shadow-glow mb-4">
-            <TrendingUp size={28} strokeWidth={2.5} />
+      <div className="w-full max-w-2xl z-10 space-y-12 animate-in fade-in zoom-in-95 duration-1000">
+        <div className="text-center space-y-6">
+          <div className="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-accent text-bg-base shadow-neon mb-2">
+            <TrendingUp size={40} strokeWidth={3} />
           </div>
-          <h1 className="text-3xl font-display font-bold tracking-normal text-white uppercase">
-            Fin<span className="text-accent">Ledger</span>
-          </h1>
-          <p className="text-text-secondary mt-2 text-sm font-medium">Welcome back. Enter your credentials to access your gateway.</p>
+          <div className="space-y-2">
+            <h1 className="text-5xl font-display font-black tracking-tight text-white uppercase italic text-center">
+              Fin<span className="text-accent">Ledger</span>
+            </h1>
+            <p className="text-text-secondary text-lg font-black tracking-[0.2em] uppercase text-center">Identity & Access Gateway</p>
+          </div>
         </div>
 
-        <Card className="glass shadow-2xl border-bg-border/50">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-4">
-              <div className="relative">
-                <Mail className="absolute right-4 top-10 text-text-muted transition-colors group-focus-within:text-accent" size={18} />
+        <Card variant="glass" className="p-2 border-white/10 shadow-2xl backdrop-blur-3xl rounded-[3rem]">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-10 p-8">
+            <div className="space-y-8">
                 <Input
-                  label="Email Address"
+                  label="Auth Identifier"
                   type="email"
                   placeholder="name@company.com"
                   {...register('email', { 
@@ -86,12 +89,9 @@ const LoginPage = () => {
                   })}
                   error={errors.email?.message}
                 />
-              </div>
               
-              <div className="relative">
-                <Lock className="absolute right-4 top-10 text-text-muted" size={18} />
                 <Input
-                  label="Password"
+                  label="Security Shield Key"
                   type="password"
                   placeholder="••••••••"
                   {...register('password', { 
@@ -100,66 +100,65 @@ const LoginPage = () => {
                   })}
                   error={errors.password?.message}
                 />
-              </div>
             </div>
 
             <Button 
               type="submit" 
-              className="w-full h-12 text-sm font-bold uppercase tracking-widest" 
+              className="w-full h-16 shadow-neon" 
               loading={isLoading}
             >
-              Sign In to Ledger <LogIn size={18} className="ml-2" />
+              Authorize System <ChevronRight size={20} className="ml-2" strokeWidth={3} />
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-sm text-text-secondary">
-            Don't have an account?{' '}
-            <Link to="/register" className="font-bold text-accent hover:underline underline-offset-4">
-              Create one for free
+          {/* Quick Access Grid */}
+          <div className="px-8 pb-8 space-y-6">
+            <div className="flex items-center gap-6">
+              <div className="h-px flex-1 bg-white/5" />
+              <span className="text-[11px] font-black uppercase tracking-[0.3em] text-text-muted">Node Access Profiles</span>
+              <div className="h-px flex-1 bg-white/5" />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+              {demoAccounts.map((account) => (
+                <button
+                  key={account.role}
+                  onClick={() => fillCredentials(account.email, account.password)}
+                  className="group flex items-center justify-between p-5 rounded-[2rem] border border-white/5 bg-bg-base/40 hover:bg-white/5 hover:border-accent/30 transition-all duration-300 text-left active:scale-[0.98]"
+                >
+                  <div className="flex items-center gap-5">
+                    <div className={`p-4 rounded-2xl bg-bg-base border border-white/5 ${account.color} shadow-sm group-hover:scale-110 transition-transform duration-500`}>
+                      {account.icon}
+                    </div>
+                    <div>
+                      <div className="text-xs font-black text-white uppercase tracking-widest mb-0.5">{account.role} Governance</div>
+                      <div className="text-[10px] text-text-secondary font-black tracking-tight uppercase opacity-80">{account.desc}</div>
+                    </div>
+                  </div>
+                  <div className="px-4 py-2 rounded-full blur-[0.4px] bg-accent/10 border border-accent/20 text-[10px] font-black text-accent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center gap-2">
+                    DEPLOY <ChevronRight size={10} strokeWidth={4} />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="pb-10 text-center space-y-6">
+             <p className="text-[11px] font-black uppercase tracking-[0.2em] text-text-secondary">
+              Unauthorized identity?{' '}
+              <Link to="/register" className="text-accent hover:text-white transition-all underline underline-offset-8 decoration-2 shadow-neon/10 ml-2">
+                Provision Account
+              </Link>
+            </p>
+            <div className="h-px w-20 bg-white/5 mx-auto" />
+            <Link 
+              to="/status" 
+              className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-text-muted hover:text-accent transition-all duration-300"
+            >
+              <Shield size={14} strokeWidth={3} /> Core Diagnostic Terminal
             </Link>
-          </p>
+          </div>
         </Card>
-
-        {/* Demo Credentials Section */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-4">
-            <div className="h-px flex-1 bg-bg-border/50" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">Quick Access Demo Profiles</span>
-            <div className="h-px flex-1 bg-bg-border/50" />
-          </div>
-          
-          <div className="grid grid-cols-1 gap-2">
-            {demoAccounts.map((account) => (
-              <button
-                key={account.role}
-                onClick={() => fillCredentials(account.email, account.password)}
-                className="group flex items-center justify-between p-3 rounded-xl border border-bg-border/30 bg-bg-card/30 hover:bg-accent/5 hover:border-accent/30 transition-all text-left"
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg bg-bg-base border border-bg-border/50 ${account.color} group-hover:scale-110 transition-transform`}>
-                    {account.icon}
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-white">{account.role} Access</div>
-                    <div className="text-[10px] text-text-muted font-mono">{account.email}</div>
-                  </div>
-                </div>
-                <div className="text-[10px] font-bold text-accent opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                  Autofill <LogIn size={10} />
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="text-center pt-4">
-          <Link 
-            to="/status" 
-            className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-accent transition-colors"
-          >
-            <Shield size={12} /> System Diagnostic Mode
-          </Link>
-        </div>
       </div>
     </div>
   );

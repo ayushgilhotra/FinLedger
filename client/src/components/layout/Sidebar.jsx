@@ -41,33 +41,33 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-bg-border bg-bg-surface flex flex-col">
+    <aside className="fixed left-0 top-0 z-40 h-screen w-72 border-r border-white/5 glass flex flex-col transition-all duration-500">
       {/* Logo */}
-      <div className="flex h-16 items-center px-6 gap-3">
-        <div className="h-8 w-8 rounded-lg bg-accent flex items-center justify-center text-bg-base">
-          <TrendingUp size={20} strokeWidth={2.5} />
+      <div className="flex h-24 items-center px-10 gap-4">
+        <div className="h-10 w-10 rounded-2xl bg-accent flex items-center justify-center text-bg-base shadow-neon">
+          <TrendingUp size={24} strokeWidth={3} />
         </div>
-        <h1 className="text-xl font-display font-bold tracking-tight text-white uppercase italic">
-          Fin<span className="text-accent underline underline-offset-4 decoration-2">Ledger</span>
+        <h1 className="text-2xl font-display font-black tracking-tight text-white uppercase italic">
+          Fin<span className="text-accent">Ledger</span>
         </h1>
       </div>
 
       {/* Nav Links */}
-      <nav className="flex-1 space-y-1 px-3 py-4">
+      <nav className="flex-1 space-y-2 px-6 py-6 overflow-y-auto">
         {filteredNavItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) => cn(
-              'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-200',
+              'group flex items-center gap-4 rounded-[1.5rem] px-5 py-3.5 text-sm font-bold uppercase tracking-widest transition-all duration-300',
               isActive 
-                ? 'bg-bg-elevated text-accent border-l-4 border-accent pl-2' 
-                : 'text-text-secondary hover:bg-bg-elevated/50 hover:text-text-primary'
+                ? 'glass-light text-accent shadow-sm translate-x-1 outline outline-1 outline-accent/20' 
+                : 'text-text-secondary hover:bg-white/5 hover:text-white'
             )}
           >
             <item.icon size={20} className={cn(
-              "transition-colors",
-              "group-hover:text-accent"
+              "transition-all duration-300",
+              "group-hover:scale-110"
             )} />
             {item.label}
           </NavLink>
@@ -75,22 +75,22 @@ const Sidebar = () => {
       </nav>
 
       {/* User Info */}
-      <div className="border-t border-bg-border p-4 bg-bg-base/30">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-bg-base font-bold shadow-glow">
+      <div className="border-t border-white/5 p-8 glass-light">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-bg-base font-black shadow-neon">
             {getInitials(user?.name)}
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="text-sm font-bold text-text-primary truncate">{user?.name}</p>
-            <Badge variant={user?.role} className="mt-0.5">{user?.role}</Badge>
+            <p className="text-sm font-black text-white truncate uppercase tracking-tight">{user?.name}</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-accent mt-0.5">{user?.role}</p>
           </div>
         </div>
         <button 
           onClick={handleLogout}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold text-expense hover:bg-expense/10 transition-colors"
+          className="group flex w-full items-center justify-center gap-3 rounded-2xl px-3 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-expense hover:bg-expense/10 border border-expense/20 transition-all duration-300 active:scale-95"
         >
-          <LogOut size={18} />
-          Logout
+          <LogOut size={16} strokeWidth={3} />
+          Logout System
         </button>
       </div>
     </aside>

@@ -18,13 +18,13 @@ const TopBar = () => {
   const getPageTitle = () => {
     const path = location.pathname;
     if (path === '/dashboard') return 'Dashboard';
-    if (path === '/transactions') return 'Transactions';
-    if (path.startsWith('/transactions/')) return 'Transaction Details';
-    if (path === '/users') return 'User Management';
-    if (path === '/profile') return 'My Profile';
-    if (path === '/leaderboard') return 'Leaderboard';
-    if (path === '/history') return 'Payment History';
-    if (path === '/top-investors') return 'Top Investors';
+    if (path === '/transactions') return 'Journal';
+    if (path.startsWith('/transactions/')) return 'Transaction Analysis';
+    if (path === '/users') return 'Registry';
+    if (path === '/profile') return 'Account Settings';
+    if (path === '/leaderboard') return 'Performance Index';
+    if (path === '/history') return 'Settlements';
+    if (path === '/top-investors') return 'Capital Markets';
     return '';
   };
 
@@ -55,39 +55,39 @@ const TopBar = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-bg-border bg-bg-base/60 px-8 backdrop-blur-md">
-      <h2 className="text-xl font-display font-bold text-text-primary tracking-tight uppercase">
+    <header className="sticky top-0 z-30 flex h-20 w-full items-center justify-between px-10 glass transition-all duration-500">
+      <h2 className="text-2xl font-display font-black text-white tracking-[0.05em] uppercase">
         {getPageTitle()}
       </h2>
 
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-10">
         {/* Search Placeholder */}
-        <div className="relative hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={16} />
+        <div className="relative hidden lg:block group">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted transition-colors group-focus-within:text-accent" size={18} />
           <input 
             type="text" 
-            placeholder="Search everything..." 
-            className="h-9 w-64 rounded-full border border-bg-border bg-bg-surface pl-10 pr-4 text-xs focus:outline-none focus:ring-1 focus:ring-accent/50 transition-all focus:bg-bg-elevated"
+            placeholder="Search Intelligence..." 
+            className="h-11 w-80 rounded-full border border-white/5 bg-bg-surface/50 pl-12 pr-4 text-xs font-bold uppercase tracking-widest focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all focus:bg-bg-elevated/80"
           />
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-6">
           <div className="relative" ref={dropdownRef}>
             <button 
               onClick={() => {
                 setShowNotifications(!showNotifications);
                 setHasUnread(false);
               }}
-              className="relative p-2 rounded-xl text-text-secondary hover:text-text-primary hover:bg-bg-surface transition-all duration-300"
+              className="relative p-2.5 rounded-2xl text-text-secondary hover:text-white hover:bg-white/5 transition-all duration-300"
             >
-              <Bell size={20} />
+              <Bell size={22} strokeWidth={2.5} />
               {hasUnread && (
-                <span className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-bg-base animate-pulse" />
+                <span className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full bg-accent ring-4 ring-bg-base shadow-neon animate-pulse" />
               )}
             </button>
             
             {showNotifications && (
-              <div className="absolute right-0 top-full">
+              <div className="absolute right-0 top-full pt-4">
                 <NotificationDropdown 
                   notifications={notifications} 
                   onMarkRead={() => setHasUnread(false)}
@@ -97,12 +97,12 @@ const TopBar = () => {
             )}
           </div>
           
-          <div className="h-8 w-px bg-bg-border hidden sm:block" />
+          <div className="h-10 w-px bg-white/5 hidden sm:block" />
           
           <div className="hidden sm:flex flex-col items-end">
-            <span className="text-sm font-bold text-text-primary uppercase tracking-tight">{user?.name}</span>
-            <span className="text-[10px] font-bold text-accent uppercase tracking-[0.2em] leading-tight opacity-80">
-              {user?.role}
+            <span className="text-sm font-black text-white uppercase tracking-tight leading-none mb-1">{user?.name}</span>
+            <span className="text-[10px] font-black text-accent uppercase tracking-[0.2em] leading-none opacity-90">
+              {user?.role} Access
             </span>
           </div>
         </div>

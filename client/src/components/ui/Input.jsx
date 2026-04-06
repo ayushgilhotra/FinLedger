@@ -13,9 +13,9 @@ const Input = React.forwardRef(({
   ...props 
 }, ref) => {
   return (
-    <div className="w-full space-y-1.5">
+    <div className="w-full space-y-2">
       {label && (
-        <label className="text-xs font-medium text-text-secondary uppercase tracking-wider">
+        <label className="text-[11px] font-black uppercase tracking-[0.2em] text-text-secondary ml-1">
           {label}
         </label>
       )}
@@ -23,17 +23,17 @@ const Input = React.forwardRef(({
         type={type}
         ref={ref}
         className={cn(
-          'flex h-11 w-full rounded-lg border border-bg-border bg-bg-surface px-4 py-2 text-sm text-text-primary ring-offset-bg-base transition-all file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/40 disabled:cursor-not-allowed disabled:opacity-50',
-          error && 'border-expense focus:ring-expense/40 focus:border-expense/40',
+          'flex h-12 w-full rounded-2xl border border-white/5 bg-bg-surface px-5 py-2 text-sm text-white transition-all duration-300 placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40 disabled:cursor-not-allowed disabled:opacity-50 hover:bg-bg-elevated/30 focus:bg-bg-elevated/50 shadow-sm',
+          error && 'border-expense/50 focus:ring-expense/20 focus:border-expense/50',
           className
         )}
         {...props}
       />
       {helperText && !error && (
-        <p className="text-xs text-text-muted">{helperText}</p>
+        <p className="text-[10px] text-text-muted font-medium ml-1">{helperText}</p>
       )}
       {error && (
-        <p className="text-xs text-expense font-medium">{error}</p>
+        <p className="text-[10px] text-expense font-black uppercase tracking-wider ml-1">{error}</p>
       )}
     </div>
   );

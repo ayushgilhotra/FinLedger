@@ -3,32 +3,33 @@
 @tailwind utilities;
 
 :root {
-  --bg-base: #080c14;
-  --bg-surface: #0e1420;
-  --bg-elevated: #161d2e;
-  --bg-border: rgba(255,255,255,0.07);
-  --accent: #0dd9c4;
-  --accent-dim: #0aa896;
-  --accent-glow: rgba(13, 217, 196, 0.15);
+  --bg-base: #000511;
+  --bg-surface: #050a1b;
+  --bg-elevated: #0a1024;
+  --bg-border: rgba(255,255,255,0.05);
+  --accent: #00C2E0;
+  --accent-hover: #009bb3;
+  --accent-glow: rgba(0, 194, 224, 0.15);
   --income: #00d4a0;
   --expense: #ff4d6d;
   --warning: #f5a623;
-  --info: #4a9eff;
-  --text-primary: #e8edf5;
-  --text-secondary: #8896a8;
-  --text-muted: #4a5568;
+  --info: #00C2E0;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
 }
 
 @layer base {
   body {
-    @apply bg-bg-base text-text-primary;
+    @apply bg-bg-base text-text-primary antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -36,8 +37,8 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-elevated);
-  border-radius: 4px;
+  background: #1e293b;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -46,23 +47,39 @@
 
 /* Page Transitions */
 .page-fade-in {
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 /* Glassmorphism */
 .glass {
-  background: rgba(14, 20, 32, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(5, 10, 27, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--bg-border);
 }
 
+.glass-light {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 /* Glow Shadow */
-.shadow-glow {
-  box-shadow: 0 0 20px var(--accent-glow);
+.shadow-neon {
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+
+/* High Radius Utils for Galileo style */
+.rounded-hyper {
+  border-radius: 3rem;
+}
+
+.rounded-mega {
+  border-radius: 4rem;
 }

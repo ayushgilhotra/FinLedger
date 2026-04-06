@@ -15,16 +15,17 @@ const Button = React.forwardRef(({
   ...props 
 }, ref) => {
   const variants = {
-    primary: 'bg-accent text-bg-base hover:bg-accent-dim shadow-glow',
-    secondary: 'bg-bg-elevated text-text-primary hover:bg-bg-border border border-bg-border',
+    primary: 'bg-accent text-bg-base hover:bg-accent-hover shadow-neon ring-1 ring-white/10',
+    secondary: 'bg-white/5 text-white hover:bg-white/10 border border-white/10 backdrop-blur-sm',
     danger: 'bg-expense text-white hover:opacity-90',
-    ghost: 'bg-transparent text-text-secondary hover:text-text-primary hover:bg-bg-elevated',
+    ghost: 'bg-transparent text-text-secondary hover:text-white hover:bg-white/5',
+    outline: 'bg-transparent text-accent border border-accent/30 hover:border-accent hover:bg-accent/5',
   };
 
   const sizes = {
-    sm: 'px-3 py-1.5 text-xs',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-6 py-3 text-base',
+    sm: 'px-5 py-2 text-xs',
+    md: 'px-8 py-3 text-sm font-bold uppercase tracking-widest',
+    lg: 'px-10 py-4 text-base font-bold uppercase tracking-widest',
   };
 
   return (
@@ -32,7 +33,7 @@ const Button = React.forwardRef(({
       ref={ref}
       disabled={disabled || loading}
       className={cn(
-        'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent/50 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none',
+        'inline-flex items-center justify-center rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50 active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none',
         variants[variant],
         sizes[size],
         className

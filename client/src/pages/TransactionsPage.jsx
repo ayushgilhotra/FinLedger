@@ -9,7 +9,7 @@ import Badge from '../components/ui/Badge';
 import Modal from '../components/ui/Modal';
 import Pagination from '../components/ui/Pagination';
 import { formatDate, formatCurrency } from '../utils/formatters';
-import { Plus, Search, Filter, Edit2, Trash2, XCircle } from 'lucide-react';
+import { Plus, Search, Filter, Edit2, Trash2, XCircle, ChevronRight } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
 const TransactionsPage = () => {
@@ -94,53 +94,60 @@ const TransactionsPage = () => {
 
   const columns = [
     { 
-      header: 'Date', 
+      header: 'Settlement Date', 
       accessor: 'date',
-      render: (row) => <span className="font-mono text-xs text-text-secondary">{formatDate(row.date)}</span>
+      render: (row) => <span className="font-mono text-[10px] font-black tracking-widest text-text-secondary uppercase">{formatDate(row.date)}</span>
     },
-    { header: 'Category', accessor: 'category', render: (row) => <span className="font-bold">{row.category}</span> },
     { 
-      header: 'Type', 
+      header: 'Category Taxonomy', 
+      accessor: 'category', 
+      render: (row) => <span className="font-black text-xs uppercase tracking-widest text-white">{row.category}</span> 
+    },
+    { 
+      header: 'Network Status', 
       accessor: 'type', 
       render: (row) => <Badge variant={row.type}>{row.type}</Badge>
     },
     { 
-      header: 'Amount', 
+      header: 'Transaction Volume', 
       accessor: 'amount', 
       render: (row) => (
-        <span className={row.type === 'income' ? 'text-income font-semibold tabular-nums tracking-normal' : 'text-expense font-semibold tabular-nums tracking-normal'}>
+        <span className={cn(
+          "font-mono text-sm font-black tabular-nums tracking-tighter",
+          row.type === 'income' ? 'text-income' : 'text-expense'
+        )}>
           {row.type === 'income' ? '+' : '-'}{formatCurrency(row.amount)}
         </span>
       )
     },
     { 
-      header: 'Notes', 
+      header: 'Audit Notes', 
       accessor: 'notes', 
-      render: (row) => <span className="text-text-secondary text-xs truncate max-w-[150px] inline-block">{row.notes || '-'}</span> 
+      render: (row) => <span className="text-text-secondary text-[10px] font-bold uppercase tracking-tight truncate max-w-[150px] inline-block">{row.notes || '-'}</span> 
     },
     { 
-      header: 'Actions', 
+      header: 'Governance', 
       render: (row) => (
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           {canModify(row) ? (
             <>
               <button 
                 onClick={() => openEditModal(row)}
-                className="p-1.5 rounded-lg text-text-secondary hover:text-accent hover:bg-accent/10 transition-colors"
-                title="Edit"
+                className="p-2 rounded-2xl bg-white/5 text-text-secondary hover:text-accent hover:bg-accent/10 transition-all border border-white/5"
+                title="Modify"
               >
-                <Edit2 size={16} />
+                <Edit2 size={14} strokeWidth={3} />
               </button>
               <button 
                 onClick={() => handleDelete(row.id)}
-                className="p-1.5 rounded-lg text-text-secondary hover:text-expense hover:bg-expense/10 transition-colors"
-                title="Delete"
+                className="p-2 rounded-2xl bg-white/5 text-text-secondary hover:text-expense hover:bg-expense/10 transition-all border border-white/5"
+                title="Revoke"
               >
-                <Trash2 size={16} />
+                <Trash2 size={14} strokeWidth={3} />
               </button>
             </>
           ) : (
-            <span className="text-text-muted italic text-[10px] uppercase font-bold tracking-widest">Locked</span>
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-text-muted px-3 py-1 rounded-full bg-white/5 border border-white/5">Immutable</span>
           )}
         </div>
       )
@@ -148,65 +155,70 @@ const TransactionsPage = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-12 pb-20 animate-in fade-in duration-700">
       {/* Filters & Actions */}
-      <Card className="glass">
-        <div className="flex flex-col lg:flex-row lg:items-end gap-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 flex-1">
-            <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase text-text-muted tracking-widest">Type</label>
-              <select 
-                name="type" 
-                value={filters.type || ''} 
-                onChange={handleFilterChange}
-                className="h-10 w-full rounded-lg border border-bg-border bg-bg-surface px-3 text-sm focus:outline-none focus:border-accent"
-              >
-                <option value="">All Types</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-              </select>
+      <Card variant="glass" className="p-2 border-white/10 rounded-[3rem]">
+        <div className="flex flex-col lg:flex-row lg:items-end gap-8 p-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 flex-1">
+            <div className="space-y-2">
+              <label className="text-[11px] font-black uppercase tracking-[0.2em] text-text-secondary ml-1">Network Type</label>
+              <div className="relative group">
+                <select 
+                  name="type" 
+                  value={filters.type || ''} 
+                  onChange={handleFilterChange}
+                  className="w-full h-12 px-5 rounded-2xl border border-white/5 bg-bg-base/40 text-[11px] font-black uppercase tracking-widest text-white focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all appearance-none cursor-pointer hover:bg-bg-elevated/30"
+                >
+                  <option value="">Consolidated View</option>
+                  <option value="income">Inflow Only</option>
+                  <option value="expense">Outflow Only</option>
+                </select>
+                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-text-muted group-hover:text-accent transition-colors">
+                  <ChevronRight size={14} strokeWidth={3} className="rotate-90" />
+                </div>
+              </div>
             </div>
             <Input 
-              label="Category" 
+              label="Intelligence Search" 
               name="category" 
-              placeholder="Search category..." 
+              placeholder="e.g. INFRASTRUCTURE" 
               value={filters.category || ''}
               onChange={handleFilterChange}
             />
             <Input 
-              label="Start Date" 
+              label="Start Interval" 
               type="date" 
               name="startDate" 
               value={filters.startDate || ''}
               onChange={handleFilterChange}
             />
             <Input 
-              label="End Date" 
+              label="End Interval" 
               type="date" 
               name="endDate"
               value={filters.endDate || ''}
               onChange={handleFilterChange}
             />
           </div>
-          <div className="flex gap-2">
-            <Button variant="secondary" onClick={handleResetFilters}>
-              <XCircle size={18} className="mr-2" /> Reset
+          <div className="flex gap-4">
+            <Button variant="secondary" size="md" onClick={handleResetFilters} className="border-white/10">
+              <XCircle size={16} className="mr-2" strokeWidth={3} /> Clear Node
             </Button>
-            <Button onClick={openAddModal}>
-              <Plus size={18} className="mr-2" /> New Entry
+            <Button size="md" onClick={openAddModal} className="shadow-neon">
+              <Plus size={16} className="mr-2" strokeWidth={3} /> Deploy Entry
             </Button>
           </div>
         </div>
       </Card>
 
       {/* Transactions Table */}
-      <Card noPadding>
+      <Card variant="glass" noPadding className="border-white/10 rounded-[3rem] overflow-hidden shadow-2xl">
         <Table 
           columns={columns} 
           data={transactions} 
           loading={loading} 
         />
-        <div className="px-6 border-t border-bg-border">
+        <div className="px-10 py-6 border-t border-white/5 bg-white/[0.02]">
           <Pagination 
             currentPage={pagination.page} 
             totalPages={pagination.totalPages} 
@@ -219,59 +231,70 @@ const TransactionsPage = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingTx ? 'Edit Transaction' : 'Record Transaction'}
+        title={editingTx ? 'Node Reconfiguration' : 'Deploy Ledger Entry'}
         footer={
-          <>
-            <Button variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button onClick={handleSubmit(onSubmit)} loading={loading}>
-              {editingTx ? 'Apply Changes' : 'Post to Ledger'}
+          <div className="flex gap-4 w-full justify-end px-6 pb-6">
+            <Button variant="ghost" size="md" onClick={() => setIsModalOpen(false)} className="font-black uppercase tracking-widest text-[11px]">Abort</Button>
+            <Button size="md" onClick={handleSubmit(onSubmit)} loading={loading} className="shadow-neon">
+              {editingTx ? 'Update Deployment' : 'Post to Blockchain'}
             </Button>
-          </>
+          </div>
         }
       >
-        <form className="space-y-4">
-          <Input 
-            label="Amount (INR)" 
-            type="number" 
-            step="0.01"
-            placeholder="0.00"
-            {...register('amount', { required: 'Amount is required', min: { value: 0.01, message: 'Amount must be > 0' } })}
-            error={errors.amount?.message}
-          />
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-text-secondary uppercase">Type</label>
-            <select 
-              className="h-11 w-full rounded-lg border border-bg-border bg-bg-surface px-4 text-sm focus:ring-2 focus:ring-accent/40"
-              {...register('type', { required: 'Type is required' })}
-            >
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
-            </select>
-          </div>
-          <Input 
-            label="Category" 
-            placeholder="e.g. Salary, Utilities, Food"
-            {...register('category', { required: 'Category is required' })}
-            error={errors.category?.message}
-          />
-          <Input 
-            label="Date" 
-            type="date"
-            {...register('date', { required: 'Date is required' })}
-            error={errors.date?.message}
-          />
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-text-secondary uppercase">Notes (Optional)</label>
-            <textarea 
-              className="w-full rounded-lg border border-bg-border bg-bg-surface px-4 py-2 text-sm min-h-[100px] focus:ring-2 focus:ring-accent/40"
-              placeholder="Add details about this transaction..."
-              {...register('notes')}
+        <form className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
+          <div className="space-y-8">
+            <Input 
+              label="Deployment Volume (INR)" 
+              type="number" 
+              step="0.01"
+              placeholder="0.00"
+              {...register('amount', { required: 'Volume is required', min: { value: 0.01, message: 'Must be > 0' } })}
+              error={errors.amount?.message}
             />
+            <div className="space-y-2">
+              <label className="text-[11px] font-black uppercase tracking-[0.2em] text-text-secondary ml-1">Transfer Protocol</label>
+              <div className="relative group">
+                <select 
+                  className="w-full h-12 px-5 rounded-2xl border border-white/10 bg-bg-base/40 text-[11px] font-black uppercase tracking-widest text-white focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all appearance-none cursor-pointer hover:bg-bg-elevated/30"
+                  {...register('type', { required: 'Protocol is required' })}
+                >
+                  <option value="expense">Outflow Protocol</option>
+                  <option value="income">Inflow Protocol</option>
+                </select>
+                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-text-muted group-hover:text-accent transition-colors">
+                  <ChevronRight size={14} strokeWidth={3} className="rotate-90" />
+                </div>
+              </div>
+            </div>
+            <Input 
+              label="Category Classification" 
+              placeholder="e.g. CAPITAL_EXPENSE"
+              {...register('category', { required: 'Classification is required' })}
+              error={errors.category?.message}
+            />
+          </div>
+          <div className="space-y-8">
+            <Input 
+              label="Interval Timestamp" 
+              type="date"
+              {...register('date', { required: 'Timestamp is required' })}
+              error={errors.date?.message}
+            />
+            <div className="space-y-2">
+              <label className="text-[11px] font-black uppercase tracking-[0.2em] text-text-secondary ml-1">Intelligence Logs</label>
+              <textarea 
+                className="w-full rounded-2xl border border-white/10 bg-bg-base/40 px-5 py-4 text-xs font-bold text-white placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all min-h-[140px] hover:bg-bg-elevated/20 focus:bg-bg-elevated/40"
+                placeholder="Log additional deployment metadata..."
+                {...register('notes')}
+              />
+            </div>
           </div>
         </form>
       </Modal>
     </div>
   );
 };
+
+const cn = (...inputs) => inputs.filter(Boolean).join(' ');
 
 export default TransactionsPage;
