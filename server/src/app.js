@@ -24,7 +24,7 @@ const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
 
 // SPA Catch-all rule for React Router
-app.get('*', (req, res, next) => {
+app.get('/(.*)', (req, res, next) => {
   // If request begins with /api, it's a 404
   if (req.url.startsWith('/api/')) {
     return next();
