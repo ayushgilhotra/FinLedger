@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-base: #080c14;
+  --bg-surface: #0e1420;
+  --bg-elevated: #161d2e;
+  --bg-border: rgba(255,255,255,0.07);
+  --accent: #0dd9c4;
+  --accent-dim: #0aa896;
+  --accent-glow: rgba(13, 217, 196, 0.15);
+  --income: #00d4a0;
+  --expense: #ff4d6d;
+  --warning: #f5a623;
+  --info: #4a9eff;
+  --text-primary: #e8edf5;
+  --text-secondary: #8896a8;
+  --text-muted: #4a5568;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-base text-text-primary;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-elevated);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Page Transitions */
+.page-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(14, 20, 32, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--bg-border);
+}
+
+/* Glow Shadow */
+.shadow-glow {
+  box-shadow: 0 0 20px var(--accent-glow);
+}
