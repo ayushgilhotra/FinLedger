@@ -14,6 +14,16 @@ router.get('/health', async (req, res, next) => {
   }
 });
 
+// Production Seeding Trigger
+router.post('/recalibrate', async (req, res, next) => {
+  try {
+    const data = await dashboardService.recalibrateSystem();
+    res.json({ success: true, message: 'System successfully recalibrated with professional dataset', data });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Recalibration failed', detail: err.message });
+  }
+});
+
 router.use(auth);
 
 router.get('/summary', async (req, res, next) => {

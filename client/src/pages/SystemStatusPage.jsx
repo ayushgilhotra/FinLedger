@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 import { Shield, Activity, Database, Server, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -8,6 +9,7 @@ import { formatCurrency } from '../utils/formatters';
 const SystemStatusPage = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [recalibrating, setRecalibrating] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchStatus = async () => {
@@ -21,6 +23,21 @@ const SystemStatusPage = () => {
       setError(err.response?.data?.error || 'Unable to connect to the backend system.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRecalibrate = async () => {
+    setRecalibrating(true);
+    const toastId = toast.loading('Recalibrating core infrastructure...');
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/dashboard/recalibrate`);
+      toast.success('System successfully recalibrated with professional dataset', { id: toastId });
+      fetchStatus();
+    } catch (err) {
+      console.error(err);
+      toast.error('Recalibration failed: ' + (err.response?.data?.detail || 'Unknown error'), { id: toastId });
+    } finally {
+      setRecalibrating(false);
     }
   };
 
@@ -43,8 +60,13 @@ const SystemStatusPage = () => {
             <h1 className="text-4xl font-display font-bold text-white tracking-tight">System Status</h1>
             <p className="text-text-secondary mt-2">Real-time integrity check of the FinLedger core infrastructure.</p>
           </div>
-          <Button onClick={fetchStatus} loading={loading} variant="secondary" className="bg-bg-elevated border-bg-border text-white">
-            <RefreshCw size={18} className={loading ? 'animate-spin mr-2' : 'mr-2'} />
+          <Button 
+            onClick={handleRecalibrate} 
+            loading={recalibrating} 
+            variant="secondary" 
+            className="bg-bg-elevated border-bg-border text-white"
+          >
+            <RefreshCw size={18} className={recalibrating ? 'animate-spin mr-2' : 'mr-2'} />
             Recalibrate System
           </Button>
         </div>
