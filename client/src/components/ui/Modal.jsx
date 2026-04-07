@@ -3,10 +3,7 @@ import React, { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import Button from './Button';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
 
 const Modal = ({ 
   isOpen, 

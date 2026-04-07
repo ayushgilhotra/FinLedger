@@ -1,10 +1,7 @@
 import { cn } from '../../utils/cn';
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
 
 const Pagination = ({ 
   currentPage, 

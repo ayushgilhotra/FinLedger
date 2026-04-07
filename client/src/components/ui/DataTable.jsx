@@ -3,10 +3,7 @@ import React from 'react';
 import { useCountUp } from '../../hooks/useCountUp';
 import { formatCurrency } from '../../utils/formatters';
 import { TrendingUp, TrendingDown } from 'lucide-react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
 
 /**
  * DataTable component for high-density transactional data presentation.

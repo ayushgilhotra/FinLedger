@@ -1,10 +1,7 @@
 import { cn } from '../../utils/cn';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
 
 const Button = React.forwardRef(({ 
   className, 

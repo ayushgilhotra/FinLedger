@@ -1,9 +1,6 @@
 import React from 'react';
 import { cn } from '../../utils/cn';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
 
 /**
  * Badge component for roles, statuses, and transactional types.

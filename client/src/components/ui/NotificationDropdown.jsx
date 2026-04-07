@@ -3,10 +3,7 @@ import React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { TrendingUp, TrendingDown, ArrowRight, CheckCircle2, Inbox } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatters';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
 
 const NotificationDropdown = ({ notifications = [], onMarkRead, onClose }) => {
   return (

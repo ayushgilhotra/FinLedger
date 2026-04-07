@@ -1,9 +1,6 @@
 import { cn } from '../../utils/cn';
 import React, { useState } from 'react';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 
-const cn = (...inputs) => twMerge(clsx(...inputs));
 
 /**
  * GlassInput component with high-contrast, translucent design.
