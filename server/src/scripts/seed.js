@@ -112,21 +112,17 @@ const usersData = [
 
 // ─── TRANSACTION TEMPLATES ─────────────────────────────────────────────────────
 const incomeCategories = [
-  { category: 'Salary', range: [80000, 150000], notes: ['Monthly salary credit', 'Base salary + bonus', 'Salary transferred'] },
-  { category: 'Freelance', range: [15000, 60000], notes: ['Web development project', 'Design contract', 'Consulting fees'] },
-  { category: 'Investment', range: [5000, 30000], notes: ['Dividend received', 'Mutual fund returns', 'Stock sale proceeds'] },
-  { category: 'Business', range: [20000, 80000], notes: ['Client payment', 'Invoice settled', 'Retainer fee'] },
+  { category: 'Salary', range: [80000, 500000], notes: ['Monthly salary credit', 'Base salary + performance bonus', 'Leadership stipend'] },
+  { category: 'Investment', range: [10000, 150000], notes: ['Dividend payout', 'Stock sale proceeds', 'Mutual fund redemption'] },
+  { category: 'Business', range: [50000, 350000], notes: ['Contract payment', 'Professional consulting fee', 'Invoice settlement'] },
 ];
 
 const expenseCategories = [
-  { category: 'Rent', range: [15000, 35000], notes: ['Monthly rent', 'Office space rent', 'Apartment rent'] },
-  { category: 'Food', range: [2000, 8000], notes: ['Grocery shopping', 'Restaurant dining', 'Online food order'] },
-  { category: 'Travel', range: [3000, 20000], notes: ['Flight booking', 'Hotel stay', 'Cab expenses', 'Train tickets'] },
-  { category: 'Entertainment', range: [1000, 5000], notes: ['OTT subscription', 'Movie tickets', 'Event passes'] },
-  { category: 'Healthcare', range: [2000, 15000], notes: ['Doctor consultation', 'Medicine purchase', 'Lab tests', 'Health insurance'] },
-  { category: 'Utilities', range: [1500, 5000], notes: ['Electricity bill', 'Internet bill', 'Mobile recharge'] },
-  { category: 'Shopping', range: [3000, 25000], notes: ['Clothing purchase', 'Electronics', 'Home furnishing'] },
-  { category: 'Education', range: [5000, 20000], notes: ['Course enrollment', 'Book purchase', 'Workshop fee'] },
+  { category: 'Rent', range: [15000, 85000], notes: ['Monthly apartment rent', 'Office space lease', 'Property maintenance'] },
+  { category: 'Food', range: [2000, 15000], notes: ['Grocery provisions', 'Corporate lunch', 'Dinner with clients'] },
+  { category: 'Transport', range: [3000, 45000], notes: ['Fuel recharge', 'Vehicle lease payment', 'Air travel', 'Commute expenses'] },
+  { category: 'Utilities', range: [2000, 12000], notes: ['Electricity grid bill', 'Optical fiber internet', 'Cloud subscription fee'] },
+  { category: 'Investment', range: [10000, 200000], notes: ['Systematic Investment Plan', 'Lump sum equity purchase', 'Crypto asset hedging'] },
 ];
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────

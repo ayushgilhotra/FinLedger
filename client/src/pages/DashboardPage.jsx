@@ -28,7 +28,7 @@ const DashboardPage = () => {
     { 
       header: 'Settlement Date', 
       accessor: 'date',
-      render: (row) => <span className="font-mono text-[11px] font-bold tracking-wider text-text-dim/80">{formatDate(row.date)}</span>
+      render: (row) => <span className="font-mono text-[11px] font-bold tracking-wider text-text-secondary">{formatDate(row.date)}</span>
     },
     { 
       header: 'Entity / Category', 
@@ -89,6 +89,7 @@ const DashboardPage = () => {
           icon={Wallet} 
           variant="teal" 
           isHero 
+          loading={loading}
         />
         <StatCard 
           label="Interval Gross Revenue" 
@@ -96,6 +97,7 @@ const DashboardPage = () => {
           delta="+12.4% vs prev week" 
           icon={TrendingUp} 
           variant="green" 
+          loading={loading}
         />
         <StatCard 
           label="System Operational Expense" 
@@ -104,6 +106,7 @@ const DashboardPage = () => {
           isNegative 
           icon={Activity} 
           variant="red" 
+          loading={loading}
         />
       </div>
 
@@ -116,7 +119,7 @@ const DashboardPage = () => {
                 <BarChart3 size={18} className="text-accent-teal" />
                 Capital Flow Engine
               </h3>
-              <p className="text-xs text-text-dim font-medium uppercase tracking-widest mt-1">Real-time throughput analytics</p>
+              <p className="text-xs text-text-secondary font-medium uppercase tracking-widest mt-1">Real-time throughput analytics</p>
             </div>
             <Badge variant="blue" className="bg-accent-blue/5 border-accent-blue/20">LIVE_TELEMETRY</Badge>
           </div>
@@ -132,7 +135,7 @@ const DashboardPage = () => {
                 <PieChart size={18} className="text-accent-blue" />
                 Resource Allocation
               </h3>
-              <p className="text-xs text-text-dim font-medium uppercase tracking-widest mt-1">Portfolio sector density</p>
+              <p className="text-xs text-text-secondary font-medium uppercase tracking-widest mt-1">Portfolio sector density</p>
             </div>
           </div>
           <div className="h-[300px] w-full">
@@ -149,7 +152,7 @@ const DashboardPage = () => {
               <Shield size={18} className="text-accent-teal" strokeWidth={2.5} />
               Verified Ledger Activity
             </h3>
-            <p className="text-xs text-text-dim font-medium uppercase tracking-widest mt-1">Latest 10 transitions recorded on node</p>
+            <p className="text-xs text-text-secondary font-medium uppercase tracking-widest mt-1">Latest 10 transitions recorded on node</p>
           </div>
           <Link to="/transactions" className="group flex items-center gap-1.5 text-xs font-bold text-accent-teal hover:text-white transition-colors uppercase tracking-[0.15em]">
             Access Full Journal

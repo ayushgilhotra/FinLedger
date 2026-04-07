@@ -23,9 +23,10 @@ const StatCard = ({
   icon: Icon, 
   variant = 'teal', 
   isHero = false,
-  isCurrency = true
+  isCurrency = true,
+  loading = false
 }) => {
-  const animatedValue = useCountUp(value);
+  const animatedValue = useCountUp(loading ? 0 : value);
   
   const variantColors = {
     teal: 'text-accent-teal',
@@ -34,6 +35,23 @@ const StatCard = ({
     red: 'text-accent-red',
     amber: 'text-accent-amber',
   };
+
+  if (loading) {
+    return (
+      <div className={`relative overflow-hidden p-6 rounded-lg border border-bg-border bg-bg-surface ${isHero ? 'border-t-accent-teal/50' : ''}`}>
+        <div className="flex items-start justify-between mb-4">
+          <div className="p-3 rounded-full bg-white/5 animate-pulse">
+            <div className="w-6 h-6 bg-white/10 rounded-full" />
+          </div>
+          <div className="h-5 w-16 bg-white/5 rounded-full animate-pulse" />
+        </div>
+        <div className="space-y-3">
+          <div className="h-3 w-24 bg-white/5 rounded animate-pulse" />
+          <div className="h-8 w-32 bg-white/10 rounded animate-pulse" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`relative overflow-hidden group p-6 rounded-lg border border-bg-border bg-gradient-card hover-lift ${isHero ? 'border-t-accent-teal/50' : ''}`}>
@@ -59,8 +77,8 @@ const StatCard = ({
       </div>
 
       <div className="space-y-1">
-        <p className="text-xs font-bold uppercase tracking-[0.1em] text-text-secondary">{label}</p>
-        <h3 className="text-3xl font-bold tracking-tight text-text-primary mono-data leading-none">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-primary/60">{label}</p>
+        <h3 className="text-3xl font-bold tracking-tight text-white mono-data leading-none">
           {isCurrency ? formatCurrency(animatedValue) : animatedValue.toLocaleString()}
         </h3>
       </div>

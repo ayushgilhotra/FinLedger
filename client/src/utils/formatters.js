@@ -1,11 +1,24 @@
 import { format } from 'date-fns';
 
 export const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 2,
-  }).format(amount);
+  if (amount === undefined || amount === null) return '₹0.00';
+  
+  const absAmount = Math.abs(amount);
+  let formatted = '';
+
+  if (absAmount >= 10000000) { // 1 Crore
+    formatted = `₹${(amount / 10000000).toFixed(2)} Cr`;
+  } else if (absAmount >= 100000) { // 1 Lakh
+    formatted = `₹${(amount / 100000).toFixed(2)} L`;
+  } else {
+    formatted = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0,
+    }).format(amount);
+  }
+
+  return formatted;
 };
 
 export const formatDate = (dateStr) => {

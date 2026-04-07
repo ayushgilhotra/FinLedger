@@ -95,7 +95,7 @@ const TransactionsPage = () => {
     { 
       header: 'Settlement Date', 
       accessor: 'date',
-      render: (row) => <span className="font-mono text-[11px] font-bold tracking-wider text-text-dim/80 uppercase">{formatDate(row.date)}</span>
+      render: (row) => <span className="font-mono text-[11px] font-bold tracking-wider text-text-secondary uppercase">{formatDate(row.date)}</span>
     },
     { 
       header: 'Entity / Taxonomy', 
@@ -126,9 +126,8 @@ const TransactionsPage = () => {
       )
     },
     { 
-      header: 'Audit Telemetry', 
       accessor: 'notes', 
-      render: (row) => <span className="text-text-dim text-[11px] font-medium truncate max-w-[200px] inline-block italic">"{row.notes || 'No log entry'}"</span> 
+      render: (row) => <span className="text-text-secondary text-[11px] font-medium truncate max-w-[200px] inline-block italic">"{row.notes || 'No log entry'}"</span> 
     },
     { 
       header: 'Governance', 
@@ -139,13 +138,13 @@ const TransactionsPage = () => {
             <>
               <button 
                 onClick={(e) => { e.stopPropagation(); openEditDrawer(row); }}
-                className="p-1.5 rounded-btn text-text-dim hover:text-accent-teal hover:bg-accent-teal/5 transition-all border border-transparent hover:border-accent-teal/20"
+                className="p-1.5 rounded-btn text-text-primary/70 hover:text-accent-teal hover:bg-accent-teal/5 transition-all border border-transparent hover:border-accent-teal/20"
               >
                 <Edit2 size={14} />
               </button>
               <button 
                 onClick={(e) => { e.stopPropagation(); handleDelete(row.id); }}
-                className="p-1.5 rounded-btn text-text-dim hover:text-accent-red hover:bg-accent-red/5 transition-all border border-transparent hover:border-accent-red/20"
+                className="p-1.5 rounded-btn text-text-primary/70 hover:text-accent-red hover:bg-accent-red/5 transition-all border border-transparent hover:border-accent-red/20"
               >
                 <Trash2 size={14} />
               </button>
@@ -219,10 +218,10 @@ const TransactionsPage = () => {
             <span className="text-[0.75rem] font-bold uppercase tracking-[0.2em] text-text-primary">Secured Ledger Stream</span>
           </div>
           <div className="flex items-center gap-4">
-             <button className="p-1.5 rounded-btn text-text-dim hover:text-text-primary transition-all">
+             <button className="p-1.5 rounded-btn text-text-primary/70 hover:text-text-primary transition-all">
                <Download size={16} />
              </button>
-             <button className="p-1.5 rounded-btn text-text-dim hover:text-text-primary transition-all">
+             <button className="p-1.5 rounded-btn text-text-primary/70 hover:text-text-primary transition-all">
                <LayoutGrid size={16} />
              </button>
           </div>
@@ -235,7 +234,7 @@ const TransactionsPage = () => {
             loading={loading} 
           />
           <div className="px-8 py-4 border-t border-bg-border bg-bg-base/30 flex justify-between items-center">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-text-dim opacity-70">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-text-secondary opacity-70">
               Encryption Node: GALILEO-S-01
             </span>
             <Pagination 
